@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "106018941898",
+    "firebase_url": "https://drive1-e416c.firebaseio.com",
+    "project_id": "drive1-e416c",
+    "storage_bucket": "drive1-e416c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:106018941898:android:d5892b7ef90102dd463d33",
+        "android_client_info": {
+          "package_name": "enal1586.ju.drive"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "106018941898-jf583afc59bc6nuu0h0cdeit449lhlg6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD_8zwlVmnhaKQGRJLuZEZ0-0mVnyd5ljU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "106018941898-jf583afc59bc6nuu0h0cdeit449lhlg6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
