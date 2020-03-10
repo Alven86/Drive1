@@ -25,7 +25,7 @@
 
 
     <Button
-        android:id="@+id/Driver"
+        android:id="@+id/driver_btn"
         android:layout_width="250dp"
         android:layout_height="60dp"
         android:layout_alignParentStart="true"
@@ -38,10 +38,10 @@
         android:text="Driver" />
 
     <Button
-        android:id="@+id/Customer"
+        android:id="@+id/customer_btn"
         android:layout_width="250dp"
         android:layout_height="60dp"
-        android:layout_below="@+id/Driver"
+        android:layout_below="@+id/driver_btn"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:layout_marginStart="10dp"
