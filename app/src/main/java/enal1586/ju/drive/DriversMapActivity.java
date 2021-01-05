@@ -33,6 +33,12 @@ import com.directions.route.Routing;
 import com.directions.route.RoutingListener;
 import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -50,6 +56,8 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -76,6 +84,7 @@ public class DriversMapActivity extends FragmentActivity implements OnMapReadyCa
     private Button mLogout, mSettings, mRideStatus, mHistory;
 
     private Switch mWorkingSwitch;
+    private GoogleSignInClient mGoogleSignInClient;
 
     private int status = 0;
 
@@ -92,6 +101,11 @@ public class DriversMapActivity extends FragmentActivity implements OnMapReadyCa
     private ImageView mCustomerProfileImage;
 
     private TextView mCustomerName, mCustomerPhone, mCustomerDestination;
+    private FirebaseAuth mAuth;
+
+
+    private GoogleApiClient googleApiClient;
+    private GoogleSignInOptions gso;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,6 +113,15 @@ public class DriversMapActivity extends FragmentActivity implements OnMapReadyCa
         setContentView(R.layout.activity_drivers_map);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         polylines = new ArrayList<>();
+
+
+
+
+
+      //DB connect.
+
+        mAuth = FirebaseAuth.getInstance();
+
 
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
@@ -110,7 +133,7 @@ public class DriversMapActivity extends FragmentActivity implements OnMapReadyCa
 
         mCustomerInfo = (LinearLayout) findViewById(R.id.customerInfo);
 
-        //mCustomerProfileImage = (ImageView) findViewById(R.id.customerProfileImage);
+        mCustomerProfileImage = (ImageView) findViewById(R.id.customerProfileImage);
 
         mCustomerName = (TextView) findViewById(R.id.customerName);
         mCustomerPhone = (TextView) findViewById(R.id.customerPhone);
@@ -151,7 +174,30 @@ public class DriversMapActivity extends FragmentActivity implements OnMapReadyCa
                 }
             }
         });
-//log out from driver
+
+
+
+
+
+        gso =  new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+
+
+        googleApiClient=new GoogleApiClient.Builder(this)
+
+
+              //  .enableAutoManage(this,this)
+                .addApi(Auth.GOOGLE_SIGN_IN_API,gso)
+                .build();
+
+        googleApiClient.connect();
+
+
+
+
+
+        //log out from driver
         mLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -159,25 +205,62 @@ public class DriversMapActivity extends FragmentActivity implements OnMapReadyCa
 
                 disconnectDriver();
 
+
+
+
+                        Auth.GoogleSignInApi.signOut(googleApiClient).setResultCallback(
+                                new ResultCallback<Status>() {
+                                    @Override
+                                    public void onResult(Status status) {
+                                        if (status.isSuccess()){
+                                            Intent intent = new Intent(DriversMapActivity.this, MainActivity.class);
+                                            startActivity(intent);
+                                        }else{
+                                            Toast.makeText(getApplicationContext(),"Session not close", Toast.LENGTH_LONG).show();
+                                        }
+                                    }
+                                });
+
+
+
+
+
+
+
+
+
+
                 FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(DriversMapActivity.this, MainActivity.class);
-                startActivity(intent);
+              //  Intent intent = new Intent(DriversMapActivity.this, MainActivity.class);
+               // startActivity(intent);
                 finish();
                 return;
             }
         });
+
+
+
+
+
+
+
+
+
+
+
+
+
         //settings driver
-        mSettings.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(DriversMapActivity.this, DriverSettingActivity.class);
-                startActivity(intent);
-                return;
-            }
+        mSettings.setOnClickListener(v -> {
+            Intent intent = new Intent(DriversMapActivity.this, DriverSettingActivity.class);
+            startActivity(intent);
+            return;
         });
 
         getAssignedCustomer();
     }
+
+
 
     private void getAssignedCustomer(){
         String driverId = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -299,6 +382,7 @@ public class DriversMapActivity extends FragmentActivity implements OnMapReadyCa
                     if(map.get("profileImageUrl")!=null){
                         Glide.with(getApplication()).load(map.get("profileImageUrl").toString()).into(mCustomerProfileImage);
                     }
+
                 }
             }
 
@@ -333,7 +417,7 @@ public class DriversMapActivity extends FragmentActivity implements OnMapReadyCa
         mCustomerName.setText("");
         mCustomerPhone.setText("");
         mCustomerDestination.setText("Destination: --");
-      //  mCustomerProfileImage.setImageResource(R.drawable.profilee);
+
     }
     //gathering information and saved in history throw DB
     private void recordRide(){

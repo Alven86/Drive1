@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 xmlns:app="http://schemas.android.com/apk/res-auto"
 xmlns:tools="http://schemas.android.com/tools"
 android:layout_width="match_parent"
@@ -7,6 +8,27 @@ android:layout_height="match_parent"
 
 android:orientation="vertical"
 android:padding="20sp">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="0dp"
+        tools:ignore="MissingConstraints">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="0dp">
+
+
+
 <ImageView
     android:layout_width="100sp"
     android:layout_height="100sp"
@@ -35,6 +57,13 @@ android:padding="20sp">
     android:background="@null"
     android:hint="car"
     android:layout_marginBottom="20sp"/>
+    <EditText
+        android:id="@+id/size"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:hint="size"
+        android:layout_marginBottom="20sp"/>
 <RadioGroup
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -68,4 +97,9 @@ android:padding="20sp">
     android:id="@+id/back"
     android:text="back"/>
 
-</LinearLayout>
+    </LinearLayout>
+    </ScrollView>
+    </RelativeLayout>
+
+
+

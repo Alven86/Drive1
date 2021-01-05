@@ -15,10 +15,12 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -36,7 +38,7 @@ import java.util.Map;
 
 public class DriverSettingActivity extends AppCompatActivity {
 
-    private EditText mNameField, mPhoneField, mCarField;
+    private EditText mNameField, mPhoneField, mCarField,mServiceField;
 
     private Button mBack, mConfirm;
 
@@ -62,6 +64,8 @@ public class DriverSettingActivity extends AppCompatActivity {
         mNameField = (EditText) findViewById(R.id.name);
         mPhoneField = (EditText) findViewById(R.id.phone);
         mCarField = (EditText) findViewById(R.id.car);
+        mServiceField = (EditText) findViewById(R.id.size);
+
 
         mProfileImage = (ImageView) findViewById(R.id.profileImage);
 
@@ -88,7 +92,12 @@ public class DriverSettingActivity extends AppCompatActivity {
         mConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveUserInformation();
+
+                    saveUserInformation();
+
+                    finish();
+
+
             }
         });
 
@@ -119,6 +128,12 @@ public class DriverSettingActivity extends AppCompatActivity {
                         mCar = map.get("car").toString();
                         mCarField.setText(mCar);
                     }
+
+
+                        if(map.get("service")!=null){
+                            mService = map.get("service").toString();
+                            mServiceField.setText(mService);
+                    }
                     if(map.get("service")!=null){
                         mService = map.get("service").toString();
                         switch (mService){
@@ -132,12 +147,14 @@ public class DriverSettingActivity extends AppCompatActivity {
                                 mRadioGroup.check(R.id.tolvSits);
                                 break;
                         }
+
                     }
                     if(map.get("profileImageUrl")!=null){
                         mProfileImageUrl = map.get("profileImageUrl").toString();
                         Glide.with(getApplication()).load(mProfileImageUrl).into(mProfileImage);
                     }
                 }
+
             }
 
             @Override
@@ -155,10 +172,12 @@ public class DriverSettingActivity extends AppCompatActivity {
 
         int selectId = mRadioGroup.getCheckedRadioButtonId();
 
-        final RadioButton radioButton = (RadioButton) findViewById(selectId);
+       // final RadioButton radioButton = (RadioButton) findViewById(selectId);
+        final RadioButton radioButton = (RadioButton)DriverSettingActivity.this.findViewById(selectId);
 
         if (radioButton.getText() == null){
-            return;
+
+
         }
 
         mService = radioButton.getText().toString();
@@ -192,21 +211,44 @@ public class DriverSettingActivity extends AppCompatActivity {
                     return;
                 }
             });
-            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+          /*  uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                   // Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                   // Uri downloadUrl = taskSnapshot.getDownloadUr1();
+                    Task<Uri> downloadUrl = taskSnapshot.getStorage().getDownloadUrl();
 
                     Map newImage = new HashMap();
-                   // newImage.put("profileImageUrl", downloadUrl.toString());
+                    newImage.put("profileImageUrl", downloadUrl.toString());
                     mDriverDatabase.updateChildren(newImage);
 
                     finish();
                     return;
                 }
             });
+
+           */
+
+            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    Task<Uri> task = taskSnapshot.getMetadata().getReference().getDownloadUrl();
+                    task.addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            String photoLink = uri.toString();
+                            Map userInfo = new HashMap();
+                            userInfo.put("profileImageUrl", photoLink);
+                            mDriverDatabase.updateChildren(userInfo);
+                        }
+                    });
+                    finish();
+                    return;
+                }
+            });
+
         }else{
             finish();
+            return;
         }
 
     }

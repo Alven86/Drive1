@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -49,6 +50,7 @@ public class CustomersSettingActivity extends AppCompatActivity {
     private String mProfileImageUrl;
 
     private Uri resultUri;
+
 
 
     @Override
@@ -157,21 +159,28 @@ public class CustomersSettingActivity extends AppCompatActivity {
             uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                   // Uri downloadUrl = taskSnapshot.getDownloadUrl();
-
-                    Map newImage = new HashMap();
-                  //  newImage.put("profileImageUrl", downloadUrl.toString());
-                    mCustomerDatabase.updateChildren(newImage);
-
+                    Task<Uri> task = taskSnapshot.getMetadata().getReference().getDownloadUrl();
+                    task.addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            String photoLink = uri.toString();
+                            Map userInfo = new HashMap();
+                            userInfo.put("profileImageUrl", photoLink);
+                            mCustomerDatabase.updateChildren(userInfo);
+                        }
+                    });
                     finish();
                     return;
                 }
             });
+
         }else{
             finish();
+            return;
         }
 
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

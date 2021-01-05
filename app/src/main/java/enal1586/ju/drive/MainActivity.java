@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
             finally
             {
-                Intent mainIntent = new Intent(MainActivity.this, WelcomeActivity.class);
+                Intent mainIntent = new Intent(MainActivity.this, LoginRegisterActivity.class);
                 startActivity(mainIntent);
             }
         }

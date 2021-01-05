@@ -29,6 +29,11 @@ import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
 import com.firebase.geofire.GeoQuery;
 import com.firebase.geofire.GeoQueryEventListener;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -85,6 +90,8 @@ public class CustomersMapActivity extends FragmentActivity implements OnMapReady
     private RadioGroup mRadioGroup;
 
     private RatingBar mRatingBar;
+    private GoogleApiClient googleApiClient;
+    private GoogleSignInOptions gso;
 
 
 
@@ -118,7 +125,92 @@ public class CustomersMapActivity extends FragmentActivity implements OnMapReady
         mRequest = (Button) findViewById(R.id.request);
         mSettings = (Button) findViewById(R.id.settings);
 
+
+
+
+
+
+
+
+
+
+
+
+//signout google 
+
+
+        gso =  new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+
+
+        googleApiClient=new GoogleApiClient.Builder(this)
+
+
+                //  .enableAutoManage(this,this)
+                .addApi(Auth.GOOGLE_SIGN_IN_API,gso)
+                .build();
+
+        googleApiClient.connect();
+
+
+
+
+
+        //log out from customer
         mLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //   isLoggingOut = true;
+
+                //  disconnectDriver();
+
+
+
+
+                Auth.GoogleSignInApi.signOut(googleApiClient).setResultCallback(
+                        new ResultCallback<Status>() {
+                            @Override
+                            public void onResult(Status status) {
+                                if (status.isSuccess()){
+                                    Intent intent = new Intent(CustomersMapActivity.this, MainActivity.class);
+                                    startActivity(intent);
+                                }else{
+                                    Toast.makeText(getApplicationContext(),"Session not close", Toast.LENGTH_LONG).show();
+                                }
+                            }
+                        });
+
+
+
+
+
+
+
+
+
+
+                FirebaseAuth.getInstance().signOut();
+                //  Intent intent = new Intent(DriversMapActivity.this, MainActivity.class);
+                // startActivity(intent);
+                finish();
+                return;
+            }
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+      /*  mLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 FirebaseAuth.getInstance().signOut();
@@ -128,6 +220,17 @@ public class CustomersMapActivity extends FragmentActivity implements OnMapReady
                 return;
             }
         });
+
+        */
+
+
+
+
+
+
+
+
+
 //request driver
         mRequest.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -379,8 +482,8 @@ public class CustomersMapActivity extends FragmentActivity implements OnMapReady
     private void endRide(){
         requestBol = false;
         geoQuery.removeAllListeners();
-        driverLocationRef.removeEventListener(driverLocationRefListener);
-        driveHasEndedRef.removeEventListener(driveHasEndedRefListener);
+       // driverLocationRef.removeEventListener(driverLocationRefListener);
+       // driveHasEndedRef.removeEventListener(driveHasEndedRefListener);
 
         if (driverFoundID != null){
             DatabaseReference driverRef = FirebaseDatabase.getInstance().getReference().child("Users").child("Drivers").child(driverFoundID).child("customerRequest");
