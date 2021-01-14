@@ -35,13 +35,13 @@ import java.util.List;
 
 public class LoginRegisterActivity extends AppCompatActivity {
     //Initialize variable.
-    private Button DriverLogInGoogle;
-    private Button DriverLoginButton;
-    private Button DriverRegisterButton;
-    private TextView DriverRegisterLink;
-    private TextView DriverStatus;
-    private EditText EmailDriver;
-    private EditText PasswordDriver;
+    private Button LogInGoogle;
+    private Button LoginButton;
+    private Button RegisterButton;
+    private TextView RegisterLink;
+    private TextView Status;
+    private EditText Email;
+    private EditText Password;
     private ProgressDialog loadingBar;
     private FirebaseAuth mAuth;
     private SignInButton signin;
@@ -71,46 +71,46 @@ public class LoginRegisterActivity extends AppCompatActivity {
 
 
         //connect the variable.
-        DriverLoginButton = (Button) findViewById(R.id.driver_login_btn);
-        DriverRegisterButton = (Button) findViewById(R.id.driver_register_btn);
-        DriverRegisterLink = (TextView) findViewById(R.id.driver_register_link);
-        DriverStatus = (TextView) findViewById(R.id.driver_status);
-        EmailDriver = (EditText) findViewById(R.id.email_driver);
-        PasswordDriver = (EditText) findViewById(R.id.password_driver);
+        LoginButton = (Button) findViewById(R.id.driver_login_btn);
+        RegisterButton = (Button) findViewById(R.id.driver_register_btn);
+        RegisterLink = (TextView) findViewById(R.id.driver_register_link);
+        Status = (TextView) findViewById(R.id.driver_status);
+        Email = (EditText) findViewById(R.id.email_driver);
+        Password = (EditText) findViewById(R.id.password_driver);
         loadingBar = new ProgressDialog(this);
-        DriverLogInGoogle = (Button) findViewById(R.id.btn_google_sign_in);
+        LogInGoogle = (Button) findViewById(R.id.btn_google_sign_in);
         //registration button visible/invisible.
-        DriverRegisterButton.setVisibility(View.INVISIBLE);
-        DriverRegisterButton.setEnabled(false);
+        RegisterButton.setVisibility(View.INVISIBLE);
+        RegisterButton.setEnabled(false);
 
         //register link visible/invisible.
-        DriverRegisterLink.setOnClickListener(new View.OnClickListener() {
+        RegisterLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DriverLoginButton.setVisibility(View.INVISIBLE);
-                DriverRegisterLink.setVisibility(View.INVISIBLE);
-                DriverLogInGoogle.setVisibility(View.INVISIBLE);
-                DriverStatus.setText("Register");
-                DriverRegisterButton.setVisibility(View.VISIBLE);
-                DriverRegisterButton.setEnabled(true);
+                LoginButton.setVisibility(View.INVISIBLE);
+                RegisterLink.setVisibility(View.INVISIBLE);
+                LogInGoogle.setVisibility(View.INVISIBLE);
+                Status.setText("Register");
+                RegisterButton.setVisibility(View.VISIBLE);
+                RegisterButton.setEnabled(true);
             }
         });
         //registration button actions.
-        DriverRegisterButton.setOnClickListener(new View.OnClickListener() {
+        RegisterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email = EmailDriver.getText().toString();
-                String password = PasswordDriver.getText().toString();
+                String email = Email.getText().toString();
+                String password = Password.getText().toString();
                 RegisterDriver(email, password);
             }
 
         });
         //login button actions.
-        DriverLoginButton.setOnClickListener(new View.OnClickListener() {
+        LoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String email = EmailDriver.getText().toString();
-                String password = PasswordDriver.getText().toString();
+                String email = Email.getText().toString();
+                String password = Password.getText().toString();
                 SignInDriver(email, password);
             }
         });
@@ -287,6 +287,7 @@ public class LoginRegisterActivity extends AppCompatActivity {
                 .addOnCompleteListener(this, new OnCompleteListener() {
                     @Override
                     public void onComplete(@NonNull Task task) {
+
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             FirebaseUser user = mAuth.getCurrentUser();
@@ -304,7 +305,7 @@ public class LoginRegisterActivity extends AppCompatActivity {
                                 Intent registerIntent = new Intent(LoginRegisterActivity.this, CustomersMapActivity.class);
                                 startActivity(registerIntent);
                             }
-                           // Intent intent = new Intent(getApplicationContext(),DriversMapActivity.class);
+                            // Intent intent = new Intent(getApplicationContext(),DriversMapActivity.class);
                             //startActivity(intent);
 
 
@@ -316,6 +317,7 @@ public class LoginRegisterActivity extends AppCompatActivity {
 
 
                         // ...
+
                     }
                 });
     }

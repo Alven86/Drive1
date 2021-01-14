@@ -2,15 +2,13 @@ package enal1586.ju.drive;
 
 import android.Manifest;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
-import android.os.Looper;
 import android.os.Bundle;
-
+import android.os.Looper;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -36,13 +34,11 @@ import com.firebase.geofire.GeoLocation;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
-import com.google.android.gms.location.LocationCallback;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
@@ -56,8 +52,6 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -65,8 +59,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.io.BufferedInputStream;
-import java.sql.Driver;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -118,7 +110,7 @@ public class DriversMapActivity extends FragmentActivity implements OnMapReadyCa
 
 
 
-      //DB connect.
+        //DB connect.
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -187,7 +179,7 @@ public class DriversMapActivity extends FragmentActivity implements OnMapReadyCa
         googleApiClient=new GoogleApiClient.Builder(this)
 
 
-              //  .enableAutoManage(this,this)
+                //  .enableAutoManage(this,this)
                 .addApi(Auth.GOOGLE_SIGN_IN_API,gso)
                 .build();
 
@@ -208,18 +200,18 @@ public class DriversMapActivity extends FragmentActivity implements OnMapReadyCa
 
 
 
-                        Auth.GoogleSignInApi.signOut(googleApiClient).setResultCallback(
-                                new ResultCallback<Status>() {
-                                    @Override
-                                    public void onResult(Status status) {
-                                        if (status.isSuccess()){
-                                            Intent intent = new Intent(DriversMapActivity.this, MainActivity.class);
-                                            startActivity(intent);
-                                        }else{
-                                            Toast.makeText(getApplicationContext(),"Session not close", Toast.LENGTH_LONG).show();
-                                        }
-                                    }
-                                });
+                Auth.GoogleSignInApi.signOut(googleApiClient).setResultCallback(
+                        new ResultCallback<Status>() {
+                            @Override
+                            public void onResult(Status status) {
+                                if (status.isSuccess()){
+                                    Intent intent = new Intent(DriversMapActivity.this, MainActivity.class);
+                                    startActivity(intent);
+                                }else{
+                                    Toast.makeText(getApplicationContext(),"Session not close", Toast.LENGTH_LONG).show();
+                                }
+                            }
+                        });
 
 
 
@@ -231,8 +223,8 @@ public class DriversMapActivity extends FragmentActivity implements OnMapReadyCa
 
 
                 FirebaseAuth.getInstance().signOut();
-              //  Intent intent = new Intent(DriversMapActivity.this, MainActivity.class);
-               // startActivity(intent);
+                //  Intent intent = new Intent(DriversMapActivity.this, MainActivity.class);
+                // startActivity(intent);
                 finish();
                 return;
             }

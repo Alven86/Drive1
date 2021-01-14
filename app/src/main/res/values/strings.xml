@@ -2,4 +2,85 @@
     <string name="app_name">Drive</string>
     <string name="title_activity_drivers_map">Map</string>
     <string name="title_activity_customers_map">Map</string>
+
+
+
+
+
+
+    <string name="Driver">DRIVER</string>
+
+    <string name="Email">Email</string>
+
+    <string name="Password">Password</string>
+
+    <string name="Rider">RIDER</string>
+
+    <string name="settings">SETTINGS</string>
+
+    <string name="driver">DRIVER</string>
+
+    <string name="password">Password</string>
+
+    <string name="email">Email</string>
+
+    <string name="i_m_a_customer">I\'m a Rider</string>
+
+    <string name="i_m_a_driver">I\'m a Driver</string>
+
+    <string name="registration">registration</string>
+
+    <string name="title_activity_driver_map">Map</string>
+
+    <string name="login">Login</string>
+
+    <string name="title_activity_maps">Map</string>
+
+    <string name="name">Name</string>
+
+    <string name="register">Register</string>
+
+    <string name="rider">RIDER</string>
+
+    <string name="history">HISTORY</string>
+
+    <string name="working">WORKING</string>
+
+    <string name="logout">LOGOUT</string>
+
+    <string name="phone">Phone</string>
+
+    <string name="car">Car</string>
+
+    <string name="sits5">5-Sits</string>
+
+    <string name="sits7">7-Sits</string>
+
+    <string name="sits12">12-Sits</string>
+
+    <string name="confirm">CONFIRM</string>
+
+    <string name="back">BACK</string>
+
+    <string name="balance">Balance: 0 kr</string>
+
+    <string name="paypalmail">Paypal E-mail</string>
+
+    <string name="payout">payout</string>
+
+    <string name="fromto">From-To</string>
+
+    <string name="distance">distance</string>
+
+    <string name="date">date</string>
+
+    <string name="calldriver">Call Driver</string>
+
+    <string name="time">time</string>
+
+    <string name="riderid">riderID</string>
+
+    <string name="payhere">Pay Here</string>
+
+    <string name="gettingyourdriver">Getting your Driver....</string>
 </resources>

@@ -1,8 +1,5 @@
 package enal1586.ju.drive;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -15,7 +12,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -40,7 +39,7 @@ public class DriverSettingActivity extends AppCompatActivity {
 
     private EditText mNameField, mPhoneField, mCarField,mServiceField;
 
-    private Button mBack, mConfirm;
+    private Button mBack, mConfirm, mHistory;
 
     private ImageView mProfileImage;
 
@@ -65,6 +64,7 @@ public class DriverSettingActivity extends AppCompatActivity {
         mPhoneField = (EditText) findViewById(R.id.phone);
         mCarField = (EditText) findViewById(R.id.car);
         mServiceField = (EditText) findViewById(R.id.size);
+        mHistory = (Button) findViewById(R.id.history);
 
 
         mProfileImage = (ImageView) findViewById(R.id.profileImage);
@@ -105,6 +105,18 @@ public class DriverSettingActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 finish();
+                return;
+            }
+        });
+
+
+        //history driver
+        mHistory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DriverSettingActivity.this, HistoryActivity.class);
+                intent.putExtra("customerOrDriver", "Drivers");
+                startActivity(intent);
                 return;
             }
         });
@@ -262,5 +274,10 @@ public class DriverSettingActivity extends AppCompatActivity {
             mProfileImage.setImageURI(resultUri);
         }
     }
+
+
+
+
+
 }
 
