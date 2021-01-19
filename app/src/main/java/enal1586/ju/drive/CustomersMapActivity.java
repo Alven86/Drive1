@@ -9,6 +9,7 @@ import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -47,6 +48,11 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.net.PlacesClient;
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -55,10 +61,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+
 
 public class CustomersMapActivity extends FragmentActivity implements OnMapReadyCallback {
     private GoogleMap mMap;
@@ -92,6 +100,8 @@ public class CustomersMapActivity extends FragmentActivity implements OnMapReady
     private RatingBar mRatingBar;
     private GoogleApiClient googleApiClient;
     private GoogleSignInOptions gso;
+    //AUTOCOMPLETE_REQUEST_CODE == ("AIzaSyDXg1TfK_xueUSWLMVuYDJJzkthBcEGveM");
+
 
 
 
@@ -106,7 +116,7 @@ public class CustomersMapActivity extends FragmentActivity implements OnMapReady
         mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        destinationLatLng = new LatLng(0.0,0.0);
+        destinationLatLng = new LatLng(0.0, 0.0);
 
         mDriverInfo = (LinearLayout) findViewById(R.id.driverInfo);
 
@@ -126,35 +136,22 @@ public class CustomersMapActivity extends FragmentActivity implements OnMapReady
         mSettings = (Button) findViewById(R.id.settings);
 
 
+//signout google
 
 
-
-
-
-
-
-
-
-
-//signout google 
-
-
-        gso =  new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
 
 
-        googleApiClient=new GoogleApiClient.Builder(this)
+        googleApiClient = new GoogleApiClient.Builder(this)
 
 
                 //  .enableAutoManage(this,this)
-                .addApi(Auth.GOOGLE_SIGN_IN_API,gso)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
         googleApiClient.connect();
-
-
-
 
 
         //log out from customer
@@ -166,28 +163,18 @@ public class CustomersMapActivity extends FragmentActivity implements OnMapReady
                 //  disconnectDriver();
 
 
-
-
                 Auth.GoogleSignInApi.signOut(googleApiClient).setResultCallback(
                         new ResultCallback<Status>() {
                             @Override
                             public void onResult(Status status) {
-                                if (status.isSuccess()){
+                                if (status.isSuccess()) {
                                     Intent intent = new Intent(CustomersMapActivity.this, MainActivity.class);
                                     startActivity(intent);
-                                }else{
-                                    Toast.makeText(getApplicationContext(),"Session not close", Toast.LENGTH_LONG).show();
+                                } else {
+                                    Toast.makeText(getApplicationContext(), "Session not close", Toast.LENGTH_LONG).show();
                                 }
                             }
                         });
-
-
-
-
-
-
-
-
 
 
                 FirebaseAuth.getInstance().signOut();
@@ -224,13 +211,6 @@ public class CustomersMapActivity extends FragmentActivity implements OnMapReady
         */
 
 
-
-
-
-
-
-
-
 //request driver
         mRequest.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -238,13 +218,13 @@ public class CustomersMapActivity extends FragmentActivity implements OnMapReady
 
                 if (requestBol) {
                     endRide();
-                } else{
+                } else {
                     //chek if its a right car
                     int selectId = mRadioGroup.getCheckedRadioButtonId();
 
                     final RadioButton radioButton = (RadioButton) findViewById(selectId);
 
-                    if (radioButton.getText() == null){
+                    if (radioButton.getText() == null) {
                         return;
                     }
 
@@ -278,7 +258,56 @@ public class CustomersMapActivity extends FragmentActivity implements OnMapReady
 
 
 
-    }
+
+        String apiKey = getString(R.string.api_key);
+
+        /**
+         * Initialize Places. For simplicity, the API key is hard-coded. In a production
+         * environment we recommend using a secure mechanism to manage API keys.
+         */
+        if (!Places.isInitialized()) {
+            Places.initialize(getApplicationContext(), apiKey);
+        }
+
+// Create a new Places client instance.
+        PlacesClient placesClient = Places.createClient(this);
+
+
+
+
+    // Initialize the AutocompleteSupportFragment.
+    AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
+            getSupportFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+
+        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME));
+
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+        @Override
+        public void onPlaceSelected(Place place) {
+            // TODO: Get info about the selected place.
+            destination = place.getName().toString();
+          //  Log.i("", "Place: " + place.getName() + ", " + place.getId());
+        }
+
+        @Override
+        public void onError(Status status) {
+            // TODO: Handle the error.
+            Log.i("", "An error occurred: " + status);
+        }
+    });
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     private int radius = 1;
