@@ -1,9 +1,9 @@
 package enal1586.ju.drive;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void run()
         {
-            //start the main screen for som secondes then continue to welcome screen.
+            //start the main screen for som secondes then continue to LoginRegisterActivity screen.
             try
             {
                 sleep(8000);

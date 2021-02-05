@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".CustomersSettingActivity"
     android:orientation="vertical"
+    android:background="@drawable/background"
     android:padding="20sp">
 
     <ScrollView
@@ -48,16 +49,36 @@
         android:hint="phone"
         android:layout_marginBottom="20sp"
         android:inputType="number"/>
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/confirm"
-        android:text="confirm"/>
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/back"
-        android:text="back"/>
+
+            <Button
+                android:id="@+id/confirm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/buttons"
+                android:drawableStart="@drawable/ic_baseline_add_task_24"
+                android:text="confirm"
+                android:textColor="@color/colorAccent" />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/history"
+                android:background="@drawable/buttons"
+                android:textColor="@color/colorAccent"
+                android:drawableStart="@drawable/ic_baseline_history_24"
+                android:text="History"
+                />
+
+            <Button
+                android:id="@+id/back"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/buttons"
+                android:drawableStart="@drawable/quantum_ic_arrow_back_grey600_24"
+                android:text="back"
+                android:textColor="@color/colorAccent" />
 
         </LinearLayout>
     </ScrollView>

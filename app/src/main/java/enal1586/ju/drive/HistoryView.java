@@ -7,18 +7,22 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-//import android.support.v7.widget.RecyclerView;
+
 
 public class HistoryView extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-    public TextView rideId;
-    public TextView time;
+
+    public TextView mRideId,mTime;
+    //constants
+    private final static String RiderId = "rideId";
+
+
     public HistoryView(View itemView) {
         super(itemView);
         itemView.setOnClickListener(this);
 
-        rideId = (TextView) itemView.findViewById(R.id.rideId);
-        time = (TextView) itemView.findViewById(R.id.time);
+        mRideId = (TextView) itemView.findViewById(R.id.rideId);
+        mTime = (TextView) itemView.findViewById(R.id.time);
     }
 
 
@@ -26,7 +30,7 @@ public class HistoryView extends RecyclerView.ViewHolder implements View.OnClick
     public void onClick(View v) {
         Intent intent = new Intent(v.getContext(), HistorySingleActivity.class);
         Bundle b = new Bundle();
-        b.putString("rideId", rideId.getText().toString());
+        b.putString(RiderId, mRideId.getText().toString());
         intent.putExtras(b);
         v.getContext().startActivity(intent);
     }

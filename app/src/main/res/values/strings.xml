@@ -4,84 +4,121 @@
     <string name="title_activity_customers_map">Map</string>
 
 
+    <!--Toast messages-->
+
+        <string name="Please_write_your_Email">Please write your Email</string>
+        <string name="Please_write_your_Password">Please write your Password</string>
+        <string name="Driver_Login_Successfully">Driver Login Successfully</string>
+        <string name="Login_Error_Try_Again">Please Try Again. Error Occurred, while Login..</string>
+        <string name="Driver">Driver</string>
+        <string name="Customer">Customer</string>
+        <string name="Customer_Register_Successfully">Customer Register Successfully</string>
+        <string name="Registering_Error_Try_Again">Please Try Again. Error Occurred, while registering</string>
+        <string name="Sorry_auth_failed">Sorry auth failed.</string>
+        <string name="Session_not_close">Session not close</string>
+        <string name="Please_provide_the_permission">Please provide the permission</string>
+        <string name="Something_went_wrong_Try_again">Something went wrong, Try again</string>
+        <string name="Error">Error: </string>
+        <string name="Route">Route </string>
+        <string name="DIstance">: distance - </string>
+        <string name="Duration">: duration - </string>
+     <!-- Alert dialogs-->
+        <string name="give_permission">Location Permission Needed</string>
+        <string name="give_permission_message">This app needs the Location permission, please accept to use location functionality.</string>
+        <string name="OK">OK</string>
+       <!--The api key-->
+        <string name="api_key">AIzaSyDXg1TfK_xueUSWLMVuYDJJzkthBcEGveM</string>
+
+        <!--String literal in set text can not be translate-->
 
 
+    <string name="while_system_is_performing_processing_on_your_data">While system is performing processing on your data.</string>
+    <string name="Please_wait">Please wait :</string>
+    <string name="getting_your_driver">Getting your Driver....</string>
+    <string name="pickup_location">pickup location</string>
+    <string name="destination">destination</string>
+    <string name="time_stamp">timestamp</string>
+    <string name="drive_completed">drive completed</string>
+    <string name="D_estination">Destination: --</string>
+    <string name="Destinati_on">\"Destination: \"</string>
+    <string name="picked_customer">picked customer</string>
+    <string name="Getting_your_driver">Getting your Driver....</string>
+    <string name="An_error_occurred">\"An error occurred: \"</string>
+    <string name="Looking_for_driver_location">Looking for Driver Location....</string>
+    <string name="Driver_is_here">Driver\'s Here</string>
+    <string name="Driver_found">\"Driver Found: \"</string>
 
-    <string name="api_key">AIzaSyDXg1TfK_xueUSWLMVuYDJJzkthBcEGveM</string>
-
-    <string name="Driver">DRIVER</string>
-
-    <string name="Email">Email</string>
-
-    <string name="Password">Password</string>
-
-    <string name="Rider">RIDER</string>
-
-    <string name="settings">SETTINGS</string>
-
-    <string name="driver">DRIVER</string>
-
-    <string name="password">Password</string>
-
-    <string name="email">Email</string>
-
-    <string name="i_m_a_customer">I\'m a Rider</string>
-
-    <string name="i_m_a_driver">I\'m a Driver</string>
-
-    <string name="registration">registration</string>
-
-    <string name="title_activity_driver_map">Map</string>
-
-    <string name="login">Login</string>
-
-    <string name="title_activity_maps">Map</string>
-
-    <string name="name">Name</string>
-
+    <!--Layouts-->
+    <string name="google">Google</string>
+    <string name="dont_have_an_account">Dont have an Account?</string>
     <string name="register">Register</string>
-
-    <string name="rider">RIDER</string>
-
-    <string name="history">HISTORY</string>
-
-    <string name="working">WORKING</string>
-
-    <string name="logout">LOGOUT</string>
-
-    <string name="phone">Phone</string>
-
-    <string name="car">Car</string>
-
-    <string name="sits5">5-Sits</string>
-
-    <string name="sits7">7-Sits</string>
-
-    <string name="sits12">12-Sits</string>
-
-    <string name="confirm">CONFIRM</string>
-
-    <string name="back">BACK</string>
-
-    <string name="balance">Balance: 0 kr</string>
-
-    <string name="paypalmail">Paypal E-mail</string>
-
-    <string name="payout">payout</string>
-
-    <string name="fromto">From-To</string>
-
-    <string name="distance">distance</string>
-
-    <string name="date">date</string>
-
-    <string name="calldriver">Call Driver</string>
-
+    <string name="login">Login</string>
+    <string name="e_mail">E-mail</string>
+    <string name="login_and_register">Login And Register</string>
     <string name="time">time</string>
 
-    <string name="riderid">riderID</string>
+    <string name="rider_id">riderID</string>
+        <string name="Email">Email</string>
 
-    <string name="payhere">Pay Here</string>
+        <string name="Password">Password</string>
+        <string name="riderid">riderID</string>
 
-    <string name="gettingyourdriver">Getting your Driver....</string>
+        <string name="fromto">From-To</string>
+        <string name="settings">SETTINGS</string>
+
+
+
+        <string name="password">Password</string>
+
+        <string name="email">Email</string>
+
+        <string name="i_m_a_customer">Customer</string>
+
+
+
+        <string name="registration">registration</string>
+
+        <string name="title_activity_driver_map">Map</string>
+
+
+
+        <string name="title_activity_maps">Map</string>
+
+        <string name="name">Name</string>
+
+
+
+        <string name="rider">RIDER</string>
+
+        <string name="history">HISTORY</string>
+
+        <string name="working">WORKING</string>
+
+        <string name="logout">LOGOUT</string>
+
+        <string name="phone">Phone</string>
+
+        <string name="car">Car</string>
+
+        <string name="sits5">5-Sits</string>
+
+        <string name="sits7">7-Sits</string>
+
+        <string name="sits12">12-Sits</string>
+
+        <string name="confirm">CONFIRM</string>
+
+        <string name="back">BACK</string>
+
+
+        <string name="from_to">From-To</string>
+
+        <string name="distance">distance</string>
+
+        <string name="date">date</string>
+
+        <string name="call_driver">Call Driver</string>
+    <string name="city">city</string>
+
+
 </resources>

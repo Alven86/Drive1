@@ -2,7 +2,6 @@ package enal1586.ju.drive;
 
 import android.Manifest;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -73,20 +72,22 @@ public class DriversMapActivity extends FragmentActivity implements OnMapReadyCa
     private FusedLocationProviderClient mFusedLocationClient;
 
 
-    private Button mLogout, mSettings, mRideStatus, mHistory;
+    private Button mLogout, mSettings, mRideStatus;
 
     private Switch mWorkingSwitch;
     private GoogleSignInClient mGoogleSignInClient;
 
-    private int status = 0;
+  //  private int mStatus = 0;
+    private String mStatus = "";
 
-    private String customerId = "", destination;
-    private LatLng destinationLatLng, pickupLatLng;
-    private float rideDistance;
 
-    private Boolean isLoggingOut = false;
+    private String mCustomerId = "", mDestination;
+    private LatLng mDestinationLatLng, mPickupLatLng;
+    private float mRideDistance;
 
-    private SupportMapFragment mapFragment;
+    private Boolean mIsLoggingOut = false;
+
+    private SupportMapFragment mMapFragment;
 
     private LinearLayout mCustomerInfo;
 
@@ -96,8 +97,27 @@ public class DriversMapActivity extends FragmentActivity implements OnMapReadyCa
     private FirebaseAuth mAuth;
 
 
-    private GoogleApiClient googleApiClient;
-    private GoogleSignInOptions gso;
+    private GoogleApiClient mGoogleApiClient;
+    private GoogleSignInOptions mGSO;
+
+//constants
+    private final static String Name = "name";
+    private final static String Phone = "phone";
+    private final static String Profile_Image= "profileImageUrl";
+    private final static String Driver = "driver";
+    private final static String Customer = "customer";
+    private final static String Rating = "rating";
+    private final static String Timestamp = "timestamp";
+    private final static String Destination = "destination";
+    private final static String From_Lat = "location/from/lat";
+    private final static String From_Lng = "location/from/lng";
+    private final static String To_Lat = "location/to/lat";
+    private final static String To_Lng = "location/to/lng";
+    private final static String Distance = "distance";
+    private final static String Destination_Lat = "destinationLat";
+    private final static String Destination_Lng = "destinationLng";
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,8 +138,8 @@ public class DriversMapActivity extends FragmentActivity implements OnMapReadyCa
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
-        mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+        mMapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        mMapFragment.getMapAsync(this);
 
 
 
@@ -146,24 +166,26 @@ public class DriversMapActivity extends FragmentActivity implements OnMapReadyCa
         mSettings = (Button) findViewById(R.id.settings);
         mLogout = (Button) findViewById(R.id.logout);
         mRideStatus = (Button) findViewById(R.id.rideStatus);
-        mRideStatus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                switch(status){
-                    case 1:
-                        status=2;
-                        erasePolylines();
-                        if(destinationLatLng.latitude!=0.0 && destinationLatLng.longitude!=0.0){
-                            getRouteToMarker(destinationLatLng);
-                        }
-                        mRideStatus.setText("drive completed");
+        mRideStatus.setOnClickListener(v -> {
+            /*
 
-                        break;
-                    case 2:
-                        recordRide();
-                        endRide();
-                        break;
-                }
+            If the mStatus = case 1 the rider pickup the customer.
+            If the mStatus is = case 2 the driver has pickup the customer and they are in the way to final destination.
+             */
+            switch(mStatus){
+                case "pickup customer":
+                    mStatus ="final destination";
+                    erasePolylines();
+                    if(mDestinationLatLng.latitude!=0.0 && mDestinationLatLng.longitude!=0.0){
+                        getRouteToMarker(mDestinationLatLng);
+                    }
+                    mRideStatus.setText(R.string.drive_completed);
+
+                    break;
+                case "final destination":
+                    recordRide();
+                    endRide();
+                    break;
             }
         });
 
@@ -171,47 +193,47 @@ public class DriversMapActivity extends FragmentActivity implements OnMapReadyCa
 
 
 
-        gso =  new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+        mGSO =  new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
 
 
-        googleApiClient=new GoogleApiClient.Builder(this)
+        mGoogleApiClient =new GoogleApiClient.Builder(this)
 
 
                 //  .enableAutoManage(this,this)
-                .addApi(Auth.GOOGLE_SIGN_IN_API,gso)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, mGSO)
                 .build();
 
-        googleApiClient.connect();
+        mGoogleApiClient.connect();
 
 
 
 
 
         //log out from driver
-        mLogout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                isLoggingOut = true;
+        mLogout.setOnClickListener(v -> {
+            mIsLoggingOut = true;
 
-                disconnectDriver();
-
+            endRide();
+            disconnectDriver();
 
 
+            FirebaseAuth.getInstance().signOut();
 
-                Auth.GoogleSignInApi.signOut(googleApiClient).setResultCallback(
-                        new ResultCallback<Status>() {
-                            @Override
-                            public void onResult(Status status) {
-                                if (status.isSuccess()){
-                                    Intent intent = new Intent(DriversMapActivity.this, MainActivity.class);
-                                    startActivity(intent);
-                                }else{
-                                    Toast.makeText(getApplicationContext(),"Session not close", Toast.LENGTH_LONG).show();
-                                }
+
+            Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
+                    new ResultCallback<Status>() {
+                        @Override
+                        public void onResult(Status status) {
+                            if (status.isSuccess()){
+                                Intent intent = new Intent(DriversMapActivity.this, MainActivity.class);
+                                startActivity(intent);
+                            }else{
+                                Toast.makeText(getApplicationContext(),R.string.Session_not_close, Toast.LENGTH_LONG).show();
                             }
-                        });
+                        }
+                    });
 
 
 
@@ -222,12 +244,11 @@ public class DriversMapActivity extends FragmentActivity implements OnMapReadyCa
 
 
 
-                FirebaseAuth.getInstance().signOut();
-                //  Intent intent = new Intent(DriversMapActivity.this, MainActivity.class);
-                // startActivity(intent);
-                finish();
-                return;
-            }
+          //  FirebaseAuth.getInstance().signOut();
+            //  Intent intent = new Intent(DriversMapActivity.this, MainActivity.class);
+            // startActivity(intent);
+            finish();
+            return;
         });
 
 
@@ -261,8 +282,8 @@ public class DriversMapActivity extends FragmentActivity implements OnMapReadyCa
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){
-                    status = 1;
-                    customerId = dataSnapshot.getValue().toString();
+                    mStatus = "pickup customer";
+                    mCustomerId = dataSnapshot.getValue().toString();
                     getAssignedCustomerPickupLocation();
                     getAssignedCustomerDestination();
                     getAssignedCustomerInfo();
@@ -282,11 +303,11 @@ public class DriversMapActivity extends FragmentActivity implements OnMapReadyCa
     private ValueEventListener assignedCustomerPickupLocationRefListener;
     //showing customer location with an red marker
     private void getAssignedCustomerPickupLocation(){
-        assignedCustomerPickupLocationRef = FirebaseDatabase.getInstance().getReference().child("customerRequest").child(customerId).child("l");
+        assignedCustomerPickupLocationRef = FirebaseDatabase.getInstance().getReference().child("customerRequest").child(mCustomerId).child("l");
         assignedCustomerPickupLocationRefListener = assignedCustomerPickupLocationRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot.exists() && !customerId.equals("")){
+                if(dataSnapshot.exists() && !mCustomerId.equals("")){
                     List<Object> map = (List<Object>) dataSnapshot.getValue();
                     double locationLat = 0;
                     double locationLng = 0;
@@ -296,9 +317,9 @@ public class DriversMapActivity extends FragmentActivity implements OnMapReadyCa
                     if(map.get(1) != null){
                         locationLng = Double.parseDouble(map.get(1).toString());
                     }
-                    pickupLatLng = new LatLng(locationLat,locationLng);
-                    pickupMarker = mMap.addMarker(new MarkerOptions().position(pickupLatLng).title("pickup location").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_pickup)));
-                    getRouteToMarker(pickupLatLng);
+                    mPickupLatLng = new LatLng(locationLat,locationLng);
+                    pickupMarker = mMap.addMarker(new MarkerOptions().position(mPickupLatLng).title("pickup location").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_pickup)));
+                    getRouteToMarker(mPickupLatLng);
                 }
             }
 
@@ -307,11 +328,12 @@ public class DriversMapActivity extends FragmentActivity implements OnMapReadyCa
             }
         });
     }
+
     // draw a line from driver to custom pik location
     private void getRouteToMarker(LatLng pickupLatLng) {
         if (pickupLatLng != null && mLastLocation != null){
             Routing routing = new Routing.Builder()
-                    .key("AIzaSyDXg1TfK_xueUSWLMVuYDJJzkthBcEGveM")
+                    .key("R.string.apiKey")
                     .travelMode(AbstractRouting.TravelMode.DRIVING)
                     .withListener(this)
                     .alternativeRoutes(false)
@@ -329,22 +351,22 @@ public class DriversMapActivity extends FragmentActivity implements OnMapReadyCa
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()) {
                     Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
-                    if(map.get("destination")!=null){
-                        destination = map.get("destination").toString();
-                        mCustomerDestination.setText("Destination: " + destination);
+                    if(map.get(Destination)!=null){
+                        mDestination = map.get(Destination).toString();
+                        mCustomerDestination.setText(getString(R.string.Destinati_on) + mDestination);
                     }
                     else{
-                        mCustomerDestination.setText("Destination: --");
+                        mCustomerDestination.setText(R.string.D_estination);
                     }
 
                     Double destinationLat = 0.0;
                     Double destinationLng = 0.0;
-                    if(map.get("destinationLat") != null){
-                        destinationLat = Double.valueOf(map.get("destinationLat").toString());
+                    if(map.get(Destination_Lat) != null){
+                        destinationLat = Double.valueOf(map.get(Destination_Lat).toString());
                     }
-                    if(map.get("destinationLng") != null){
-                        destinationLng = Double.valueOf(map.get("destinationLng").toString());
-                        destinationLatLng = new LatLng(destinationLat, destinationLng);
+                    if(map.get(Destination_Lng) != null){
+                        destinationLng = Double.valueOf(map.get(Destination_Lng).toString());
+                        mDestinationLatLng = new LatLng(destinationLat, destinationLng);
                     }
 
                 }
@@ -359,20 +381,21 @@ public class DriversMapActivity extends FragmentActivity implements OnMapReadyCa
     // show customer information to driver
     private void getAssignedCustomerInfo(){
         mCustomerInfo.setVisibility(View.VISIBLE);
-        DatabaseReference mCustomerDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child("Customers").child(customerId);
+        DatabaseReference mCustomerDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child("Customers").child(mCustomerId);
         mCustomerDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
+
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists() && dataSnapshot.getChildrenCount()>0){
                     Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
-                    if(map.get("name")!=null){
-                        mCustomerName.setText(map.get("name").toString());
+                    if(map.get(Name)!=null){
+                        mCustomerName.setText(map.get(Name).toString());
                     }
-                    if(map.get("phone")!=null){
-                        mCustomerPhone.setText(map.get("phone").toString());
+                    if(map.get(Phone)!=null){
+                        mCustomerPhone.setText(map.get(Phone).toString());
                     }
-                    if(map.get("profileImageUrl")!=null){
-                        Glide.with(getApplication()).load(map.get("profileImageUrl").toString()).into(mCustomerProfileImage);
+                    if(map.get(Profile_Image)!=null){
+                        Glide.with(getApplication()).load(map.get(Profile_Image).toString()).into(mCustomerProfileImage);
                     }
 
                 }
@@ -386,7 +409,7 @@ public class DriversMapActivity extends FragmentActivity implements OnMapReadyCa
 
     //when the ride is end
     private void endRide(){
-        mRideStatus.setText("picked customer");
+        mRideStatus.setText(R.string.picked_customer);
         erasePolylines();
 
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -395,9 +418,9 @@ public class DriversMapActivity extends FragmentActivity implements OnMapReadyCa
 
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("customerRequest");
         GeoFire geoFire = new GeoFire(ref);
-        geoFire.removeLocation(customerId);
-        customerId="";
-        rideDistance = 0;
+        geoFire.removeLocation(mCustomerId);
+        mCustomerId ="";
+        mRideDistance = 0;
 
         if(pickupMarker != null){
             pickupMarker.remove();
@@ -408,30 +431,31 @@ public class DriversMapActivity extends FragmentActivity implements OnMapReadyCa
         mCustomerInfo.setVisibility(View.GONE);
         mCustomerName.setText("");
         mCustomerPhone.setText("");
-        mCustomerDestination.setText("Destination: --");
+        mCustomerDestination.setText(R.string.D_estination);
 
     }
     //gathering information and saved in history throw DB
     private void recordRide(){
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         DatabaseReference driverRef = FirebaseDatabase.getInstance().getReference().child("Users").child("Drivers").child(userId).child("history");
-        DatabaseReference customerRef = FirebaseDatabase.getInstance().getReference().child("Users").child("Customers").child(customerId).child("history");
+        DatabaseReference customerRef = FirebaseDatabase.getInstance().getReference().child("Users").child("Customers").child(mCustomerId).child("history");
         DatabaseReference historyRef = FirebaseDatabase.getInstance().getReference().child("history");
         String requestId = historyRef.push().getKey();
         driverRef.child(requestId).setValue(true);
         customerRef.child(requestId).setValue(true);
 
+
         HashMap map = new HashMap();
-        map.put("driver", userId);
-        map.put("customer", customerId);
-        map.put("rating", 0);
-        map.put("timestamp", getCurrentTimestamp());
-        map.put("destination", destination);
-        map.put("location/from/lat", pickupLatLng.latitude);
-        map.put("location/from/lng", pickupLatLng.longitude);
-        map.put("location/to/lat", destinationLatLng.latitude);
-        map.put("location/to/lng", destinationLatLng.longitude);
-        map.put("distance", rideDistance);
+        map.put(Driver, userId);
+        map.put(Customer, mCustomerId);
+        map.put(Rating, 0);
+        map.put(Timestamp, getCurrentTimestamp());
+        map.put(Destination, mDestination);
+        map.put(From_Lat, mPickupLatLng.latitude);
+        map.put(From_Lng, mPickupLatLng.longitude);
+        map.put(To_Lat, mDestinationLatLng.latitude);
+        map.put(To_Lng, mDestinationLatLng.longitude);
+        map.put(Distance, mRideDistance);
         historyRef.child(requestId).updateChildren(map);
     }
 
@@ -466,8 +490,8 @@ public class DriversMapActivity extends FragmentActivity implements OnMapReadyCa
             for(Location location : locationResult.getLocations()){
                 if(getApplicationContext()!=null){
 
-                    if(!customerId.equals("") && mLastLocation!=null && location != null){
-                        rideDistance += mLastLocation.distanceTo(location)/1000;
+                    if(!mCustomerId.equals("") && mLastLocation!=null && location != null){
+                        mRideDistance += mLastLocation.distanceTo(location)/1000;
                     }
                     mLastLocation = location;
 
@@ -482,7 +506,7 @@ public class DriversMapActivity extends FragmentActivity implements OnMapReadyCa
                     GeoFire geoFireAvailable = new GeoFire(refAvailable);
                     GeoFire geoFireWorking = new GeoFire(refWorking);
 
-                    switch (customerId){
+                    switch (mCustomerId){
                         case "":
                             geoFireWorking.removeLocation(userId);
                             geoFireAvailable.setLocation(userId, new GeoLocation(location.getLatitude(), location.getLongitude()));
@@ -502,14 +526,9 @@ public class DriversMapActivity extends FragmentActivity implements OnMapReadyCa
         if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
                 new AlertDialog.Builder(this)
-                        .setTitle("give permission")
-                        .setMessage("give permission message")
-                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                ActivityCompat.requestPermissions(DriversMapActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-                            }
-                        })
+                        .setTitle(getResources().getString(R.string.give_permission))
+                        .setMessage(getResources().getString(R.string.give_permission_message))
+                        .setPositiveButton(getResources().getString(R.string.OK), (dialogInterface, i) -> ActivityCompat.requestPermissions(DriversMapActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1))
                         .create()
                         .show();
             }
@@ -530,7 +549,7 @@ public class DriversMapActivity extends FragmentActivity implements OnMapReadyCa
                         mMap.setMyLocationEnabled(true);
                     }
                 } else{
-                    Toast.makeText(getApplicationContext(), "Please provide the permission", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), R.string.Please_provide_the_permission, Toast.LENGTH_LONG).show();
                 }
                 break;
             }
@@ -553,9 +572,12 @@ public class DriversMapActivity extends FragmentActivity implements OnMapReadyCa
         }
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("driversAvailable");
-
         GeoFire geoFire = new GeoFire(ref);
         geoFire.removeLocation(userId);
+        DatabaseReference refWorking = FirebaseDatabase.getInstance().getReference("driversWorking");
+        GeoFire geoFireWorking = new GeoFire(refWorking);
+        geoFireWorking.removeLocation(userId);
+
     }
 
 
@@ -568,9 +590,9 @@ public class DriversMapActivity extends FragmentActivity implements OnMapReadyCa
     @Override
     public void onRoutingFailure(RouteException e) {
         if(e != null) {
-            Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, R.string.Error + e.getMessage(), Toast.LENGTH_LONG).show();
         }else {
-            Toast.makeText(this, "Something went wrong, Try again", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.Something_went_wrong_Try_again, Toast.LENGTH_SHORT).show();
         }
     }
     @Override
@@ -598,7 +620,7 @@ public class DriversMapActivity extends FragmentActivity implements OnMapReadyCa
             Polyline polyline = mMap.addPolyline(polyOptions);
             polylines.add(polyline);
 
-            Toast.makeText(getApplicationContext(),"Route "+ (i+1) +": distance - "+ route.get(i).getDistanceValue()+": duration - "+ route.get(i).getDurationValue(),Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(),R.string.Route+ (i+1) +R.string.DIstance+ route.get(i).getDistanceValue()+R.string.Duration+ route.get(i).getDurationValue(),Toast.LENGTH_SHORT).show();
         }
 
     }

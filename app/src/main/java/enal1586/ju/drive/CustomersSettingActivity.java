@@ -1,8 +1,5 @@
 package enal1586.ju.drive;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -13,6 +10,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -37,19 +37,21 @@ public class CustomersSettingActivity extends AppCompatActivity {
 
     private EditText mNameField, mPhoneField;
 
-    private Button mBack, mConfirm;
+    private Button mBack, mConfirm, mHistory;;
 
     private ImageView mProfileImage;
 
     private FirebaseAuth mAuth;
     private DatabaseReference mCustomerDatabase;
 
-    private String userID;
-    private String mName;
-    private String mPhone;
-    private String mProfileImageUrl;
+    private String mUserID,mName,mPhone,mProfileImageUrl;
 
-    private Uri resultUri;
+
+    private Uri mResultUri;
+
+    private final static String Name = "name";
+    private final static String Phone = "phone";
+    private final static String Profile_Image= "profileImageUrl";
 
 
 
@@ -64,10 +66,11 @@ public class CustomersSettingActivity extends AppCompatActivity {
 
         mBack = (Button) findViewById(R.id.back);
         mConfirm = (Button) findViewById(R.id.confirm);
+        mHistory = (Button) findViewById(R.id.history);
 
         mAuth = FirebaseAuth.getInstance();
-        userID = mAuth.getCurrentUser().getUid();
-        mCustomerDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child("Customers").child(userID);
+        mUserID = mAuth.getCurrentUser().getUid();
+        mCustomerDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child("Customers").child(mUserID);
 
         getUserInfo();
 //chose customer image
@@ -94,6 +97,16 @@ public class CustomersSettingActivity extends AppCompatActivity {
                 return;
             }
         });
+
+        mHistory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(CustomersSettingActivity.this, HistoryActivity.class);
+                intent.putExtra("customerOrDriver", "Customers");
+                startActivity(intent);
+                return;
+            }
+        });
     }
     //wirity customer information in data base
     private void getUserInfo(){
@@ -102,16 +115,16 @@ public class CustomersSettingActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists() && dataSnapshot.getChildrenCount()>0){
                     Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
-                    if(map.get("name")!=null){
-                        mName = map.get("name").toString();
+                    if(map.get(Name)!=null){
+                        mName = map.get(Name).toString();
                         mNameField.setText(mName);
                     }
-                    if(map.get("phone")!=null){
-                        mPhone = map.get("phone").toString();
+                    if(map.get(Phone)!=null){
+                        mPhone = map.get(Phone).toString();
                         mPhoneField.setText(mPhone);
                     }
-                    if(map.get("profileImageUrl")!=null){
-                        mProfileImageUrl = map.get("profileImageUrl").toString();
+                    if(map.get(Profile_Image)!=null){
+                        mProfileImageUrl = map.get(Profile_Image).toString();
                         Glide.with(getApplication()).load(mProfileImageUrl).into(mProfileImage);
                     }
                 }
@@ -130,16 +143,16 @@ public class CustomersSettingActivity extends AppCompatActivity {
         mPhone = mPhoneField.getText().toString();
 
         Map userInfo = new HashMap();
-        userInfo.put("name", mName);
-        userInfo.put("phone", mPhone);
+        userInfo.put(Name, mName);
+        userInfo.put(Phone, mPhone);
         mCustomerDatabase.updateChildren(userInfo);
 
-        if(resultUri != null) {
+        if(mResultUri != null) {
 
-            StorageReference filePath = FirebaseStorage.getInstance().getReference().child("profile_images").child(userID);
+            StorageReference filePath = FirebaseStorage.getInstance().getReference().child("profile_images").child(mUserID);
             Bitmap bitmap = null;
             try {
-                bitmap = MediaStore.Images.Media.getBitmap(getApplication().getContentResolver(), resultUri);
+                bitmap = MediaStore.Images.Media.getBitmap(getApplication().getContentResolver(), mResultUri);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -165,7 +178,7 @@ public class CustomersSettingActivity extends AppCompatActivity {
                         public void onSuccess(Uri uri) {
                             String photoLink = uri.toString();
                             Map userInfo = new HashMap();
-                            userInfo.put("profileImageUrl", photoLink);
+                            userInfo.put(Profile_Image, photoLink);
                             mCustomerDatabase.updateChildren(userInfo);
                         }
                     });
@@ -187,8 +200,8 @@ public class CustomersSettingActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == 1 && resultCode == Activity.RESULT_OK){
             final Uri imageUri = data.getData();
-            resultUri = imageUri;
-            mProfileImage.setImageURI(resultUri);
+            mResultUri = imageUri;
+            mProfileImage.setImageURI(mResultUri);
         }
     }
 }

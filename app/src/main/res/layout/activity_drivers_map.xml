@@ -23,6 +23,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/logout"
+                android:drawableStart="@drawable/ic_baseline_exit_to_app_24"
+                android:background="@drawable/buttons"
+                android:textColor="@color/colorAccent"
                 android:text="logout"/>
 
             <Button
@@ -31,6 +34,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/settings"
+                android:drawableStart="@drawable/ic_baseline_settings_24"
+                android:background="@drawable/buttons"
+                android:textColor="@color/colorAccent"
                 android:text="settings"/>
         </LinearLayout>
         <Switch
@@ -38,7 +44,8 @@
             android:layout_height="wrap_content"
             android:text="working"
             android:layout_margin="10sp"
-            android:id="@+id/workingSwitch"/>
+            android:id="@+id/workingSwitch"
+            tools:ignore="UseSwitchCompatOrMaterialXml" />
     </LinearLayout>
 
 
@@ -93,6 +100,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="picked rider"
+            android:background="@drawable/buttons"
+            android:textColor="@color/colorAccent"
             android:id="@+id/rideStatus"/>
 
 

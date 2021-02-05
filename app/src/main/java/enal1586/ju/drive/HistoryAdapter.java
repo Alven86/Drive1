@@ -1,7 +1,6 @@
 package enal1586.ju.drive;
 
 import android.content.Context;
-//import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,12 +11,12 @@ import java.util.List;
 
 public class HistoryAdapter extends RecyclerView.Adapter<HistoryView> {
 
-    private List<HistoryObject> itemList;
-    private Context context;
+    private List<HistoryInfo> mItemList;
+    private Context mContext;
 
-    public HistoryAdapter(List<HistoryObject> itemList, Context context) {
-        this.itemList = itemList;
-        this.context = context;
+    public HistoryAdapter(List<HistoryInfo> itemList, Context context) {
+        this.mItemList = itemList;
+        this.mContext = context;
     }
 
     @Override
@@ -32,14 +31,14 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryView> {
 
     @Override
     public void onBindViewHolder(HistoryView holder, final int position) {
-        holder.rideId.setText(itemList.get(position).getRideId());
-        if(itemList.get(position).getTime()!=null){
-            holder.time.setText(itemList.get(position).getTime());
+        holder.mRideId.setText(mItemList.get(position).getmRideId());
+        if(mItemList.get(position).getmTime()!=null){
+            holder.mTime.setText(mItemList.get(position).getmTime());
         }
     }
     @Override
     public int getItemCount() {
-        return this.itemList.size();
+        return this.mItemList.size();
     }
 
 }

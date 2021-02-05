@@ -1,8 +1,5 @@
 package enal1586.ju.drive;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,12 +11,13 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.firebase.ui.auth.AuthUI;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -28,30 +26,19 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
-import java.util.List;
 
 public class LoginRegisterActivity extends AppCompatActivity {
     //Initialize variable.
-    private Button LogInGoogle;
-    private Button LoginButton;
-    private Button RegisterButton;
-    private TextView RegisterLink;
-    private TextView Status;
-    private EditText Email;
-    private EditText Password;
-    private ProgressDialog loadingBar;
+    private Button mLogInGoogle,mLoginButton,mRegisterButton,mBack;
+    private TextView mRegisterLink,mStatus;
+    private EditText mEmail,mPassword;
+    private ProgressDialog mLoadingBar;
     private FirebaseAuth mAuth;
-    private SignInButton signin;
     GoogleSignInClient mGoogleSignInClient;
-    private final static int RC_SIGN_IN = 9191;
-    private FirebaseAuth.AuthStateListener listener;
-    private List<AuthUI.IdpConfig> providers;
-    FirebaseDatabase database;
-    DatabaseReference driverInfoRef;
-    //  GoogleApiClient mGoogleApiClient;
+    private final static int mRC_SIGN_IN = 9191;
+
+
+
     // variables
 
     Switch aSwitch;
@@ -62,61 +49,74 @@ public class LoginRegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-      //  signin = findViewById(R.id.sig_in_button);
-        setContentView(R.layout.activity_driver_login_register);
+        setContentView(R.layout.activity_login_register);
+
+
 
         //DB connect.
 
         mAuth = FirebaseAuth.getInstance();
 
-
         //connect the variable.
-        LoginButton = (Button) findViewById(R.id.driver_login_btn);
-        RegisterButton = (Button) findViewById(R.id.driver_register_btn);
-        RegisterLink = (TextView) findViewById(R.id.driver_register_link);
-        Status = (TextView) findViewById(R.id.driver_status);
-        Email = (EditText) findViewById(R.id.email_driver);
-        Password = (EditText) findViewById(R.id.password_driver);
-        loadingBar = new ProgressDialog(this);
-        LogInGoogle = (Button) findViewById(R.id.btn_google_sign_in);
+        mBack = (Button) findViewById(R.id.back);
+        mLoginButton = (Button) findViewById(R.id.driver_login_btn);
+        mRegisterButton = (Button) findViewById(R.id.driver_register_btn);
+        mRegisterLink = (TextView) findViewById(R.id.driver_register_link);
+        mStatus = (TextView) findViewById(R.id.driver_status);
+        mEmail = (EditText) findViewById(R.id.email);
+        mPassword = (EditText) findViewById(R.id.password);
+        mLoadingBar = new ProgressDialog(this);
+        mLogInGoogle = (Button) findViewById(R.id.btn_google_sign_in);
+
         //registration button visible/invisible.
-        RegisterButton.setVisibility(View.INVISIBLE);
-        RegisterButton.setEnabled(false);
+        mBack.setVisibility(View.INVISIBLE);
+        mBack.setEnabled(false);
+        mRegisterButton.setVisibility(View.INVISIBLE);
+        mRegisterButton.setEnabled(false);
 
         //register link visible/invisible.
-        RegisterLink.setOnClickListener(new View.OnClickListener() {
+        mRegisterLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LoginButton.setVisibility(View.INVISIBLE);
-                RegisterLink.setVisibility(View.INVISIBLE);
-                LogInGoogle.setVisibility(View.INVISIBLE);
-                Status.setText("Register");
-                RegisterButton.setVisibility(View.VISIBLE);
-                RegisterButton.setEnabled(true);
+                mLoginButton.setVisibility(View.INVISIBLE);
+                mRegisterLink.setVisibility(View.INVISIBLE);
+                mLogInGoogle.setVisibility(View.INVISIBLE);
+                mStatus.setText(R.string.register);
+                mRegisterButton.setVisibility(View.VISIBLE);
+                mRegisterButton.setEnabled(true);
+                mBack.setVisibility(View.VISIBLE);
+                mBack.setEnabled(true);
             }
         });
         //registration button actions.
-        RegisterButton.setOnClickListener(new View.OnClickListener() {
+        mRegisterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email = Email.getText().toString();
-                String password = Password.getText().toString();
+                String email = mEmail.getText().toString();
+                String password = mPassword.getText().toString();
                 RegisterDriver(email, password);
             }
 
         });
+
+        mBack.setOnClickListener(v -> {
+
+            recreate();
+        });
+
         //login button actions.
-        LoginButton.setOnClickListener(new View.OnClickListener() {
+        mLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String email = Email.getText().toString();
-                String password = Password.getText().toString();
+                String email = mEmail.getText().toString();
+                String password = mPassword.getText().toString();
                 SignInDriver(email, password);
             }
         });
 
 
-        aSwitch = (Switch) findViewById(R.id.switch1);   //Using Swich btn to chose Driver or Rider Navi Drawer
+        //Using Swich btn to chose Driver or Rider Navi Drawer
+        aSwitch = (Switch) findViewById(R.id.switch1);
 
         createRequest();
 
@@ -127,55 +127,44 @@ public class LoginRegisterActivity extends AppCompatActivity {
 
 
 
-
-
-
-
-
-
     //check mai/pass if is empty then log in to DB.
     private void SignInDriver(String email, String password) {
         if (TextUtils.isEmpty(email)) {
-            Toast.makeText(LoginRegisterActivity.this, "Please write your Email...", Toast.LENGTH_SHORT).show();
+            Toast.makeText(LoginRegisterActivity.this, R.string.Please_write_your_Email , Toast.LENGTH_SHORT).show();
         }
 
         if (TextUtils.isEmpty(password)) {
-            Toast.makeText(LoginRegisterActivity.this, "Please write your Password...", Toast.LENGTH_SHORT).show();
+            Toast.makeText(LoginRegisterActivity.this, R.string.Please_write_your_Password, Toast.LENGTH_SHORT).show();
         } else {
             //loading message show when Login user to DB.
-            loadingBar.setTitle("Please wait :");
-            loadingBar.setMessage("While system is performing processing on your data...");
-            loadingBar.show();
+            mLoadingBar.setTitle(getString(R.string.Please_wait));
+            mLoadingBar.setMessage(getString(R.string.while_system_is_performing_processing_on_your_data));
+            mLoadingBar.show();
 
-            mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-                    if (task.isSuccessful()) {
-                        Toast.makeText(LoginRegisterActivity.this, "Driver Login Successfully... ", Toast.LENGTH_SHORT).show();
-                        FirebaseUser user = mAuth.getCurrentUser();
-                        loadingBar.dismiss();
+            mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, task -> {
+                if (task.isSuccessful()) {
+                    Toast.makeText(LoginRegisterActivity.this, R.string.Driver_Login_Successfully, Toast.LENGTH_SHORT).show();
+                    FirebaseUser user = mAuth.getCurrentUser();
+                    mLoadingBar.dismiss();
 
 
-                        // Start next activity
-                        if (aSwitch.isChecked() == true) {
-                            Toast.makeText(getBaseContext(), "DRIVER", Toast.LENGTH_SHORT).show();
-                            Intent registerIntent = new Intent(LoginRegisterActivity.this, DriversMapActivity.class);
-                            startActivity(registerIntent);
-                        } else {
-                            Toast.makeText(getBaseContext(), "RIDER", Toast.LENGTH_SHORT).show();
-                            Intent registerIntent = new Intent(LoginRegisterActivity.this, CustomersMapActivity.class);
-                            startActivity(registerIntent);
-                        }
-
-                        //log in to map activity.
-                       // Intent intent = new Intent(DriverLoginRegisterActivity.this, DriversMapActivity.class);
-                        //startActivity(intent);
+                    // Start next activity
+                    if (aSwitch.isChecked() == true) {
+                        Toast.makeText(getBaseContext(), R.string.Driver, Toast.LENGTH_SHORT).show();
+                        Intent registerIntent = new Intent(LoginRegisterActivity.this, DriversMapActivity.class);
+                        startActivity(registerIntent);
                     } else {
-                        Toast.makeText(LoginRegisterActivity.this, "Please Try Again. Error Occurred, while Login.. ", Toast.LENGTH_SHORT).show();
-
-                        loadingBar.dismiss();
-
+                        Toast.makeText(getBaseContext(), R.string.Customer, Toast.LENGTH_SHORT).show();
+                        Intent registerIntent = new Intent(LoginRegisterActivity.this, CustomersMapActivity.class);
+                        startActivity(registerIntent);
                     }
+
+
+                } else {
+                    Toast.makeText(LoginRegisterActivity.this, R.string.Login_Error_Try_Again, Toast.LENGTH_SHORT).show();
+
+                    mLoadingBar.dismiss();
+
                 }
             });
         }
@@ -185,45 +174,42 @@ public class LoginRegisterActivity extends AppCompatActivity {
     private void RegisterDriver(String email, String password) {
 
         if (TextUtils.isEmpty(email)) {
-            Toast.makeText(LoginRegisterActivity.this, "Please write your Email...", Toast.LENGTH_SHORT).show();
+            Toast.makeText(LoginRegisterActivity.this, R.string.Please_write_your_Email, Toast.LENGTH_SHORT).show();
         }
 
         if (TextUtils.isEmpty(password)) {
-            Toast.makeText(LoginRegisterActivity.this, "Please write your Password...", Toast.LENGTH_SHORT).show();
+            Toast.makeText(LoginRegisterActivity.this, R.string.Please_write_your_Password, Toast.LENGTH_SHORT).show();
         } else {
             //loading message show when register new user to DB.
-            loadingBar.setTitle("Please wait :");
-            loadingBar.setMessage("While system is performing processing on your data...");
-            loadingBar.show();
+            mLoadingBar.setTitle(getString(R.string.Please_wait));
+            mLoadingBar.setMessage(getString(R.string.while_system_is_performing_processing_on_your_data));
+            mLoadingBar.show();
 
             //Register new user to DB.
             mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
-                        Toast.makeText(LoginRegisterActivity.this, "Customer Register Successfully... ", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginRegisterActivity.this, R.string.Customer_Register_Successfully, Toast.LENGTH_SHORT).show();
                         FirebaseUser user = mAuth.getCurrentUser();
-                        loadingBar.dismiss();
+                        mLoadingBar.dismiss();
 
                         // Start next activity
                         if (aSwitch.isChecked() == true) {
-                            Toast.makeText(getBaseContext(), "DRIVER", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getBaseContext(), R.string.Driver, Toast.LENGTH_SHORT).show();
                             Intent registerIntent = new Intent(LoginRegisterActivity.this, DriversMapActivity.class);
                             startActivity(registerIntent);
                         } else {
-                            Toast.makeText(getBaseContext(), "RIDER", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getBaseContext(), R.string.Customer, Toast.LENGTH_SHORT).show();
                             Intent registerIntent = new Intent(LoginRegisterActivity.this, CustomersMapActivity.class);
                             startActivity(registerIntent);
                         }
 
 
-                        //start map activity.
-                        //Intent intent = new Intent(DriverLoginRegisterActivity.this, DriversMapActivity.class);
-                       // startActivity(intent);
                     } else {
-                        Toast.makeText(LoginRegisterActivity.this, "Please Try Again. Error Occurred, while registering... ", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginRegisterActivity.this, R.string.Registering_Error_Try_Again, Toast.LENGTH_SHORT).show();
 
-                        loadingBar.dismiss();
+                        mLoadingBar.dismiss();
                     }
                 }
             });
@@ -252,7 +238,7 @@ public class LoginRegisterActivity extends AppCompatActivity {
 
     private void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-        startActivityForResult(signInIntent, RC_SIGN_IN);
+        startActivityForResult(signInIntent, mRC_SIGN_IN);
     }
 
 
@@ -262,7 +248,7 @@ public class LoginRegisterActivity extends AppCompatActivity {
 
 
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
-        if (requestCode == RC_SIGN_IN) {
+        if (requestCode == mRC_SIGN_IN) {
             Task task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
                 // Google Sign In was successful, authenticate with Firebase
@@ -291,32 +277,29 @@ public class LoginRegisterActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             FirebaseUser user = mAuth.getCurrentUser();
-                            loadingBar.dismiss();
+                            mLoadingBar.dismiss();
                             // Start next activity
                             if (aSwitch.isChecked() == true) {
-                                Toast.makeText(getBaseContext(), "DRIVER", Toast.LENGTH_SHORT).show();
-                                loadingBar.dismiss();
+                                Toast.makeText(getBaseContext(), R.string.Driver, Toast.LENGTH_SHORT).show();
+                                mLoadingBar.dismiss();
                                 Intent registerIntent = new Intent(LoginRegisterActivity.this, DriversMapActivity.class);
                                 startActivity(registerIntent);
 
                             } else {
-                                Toast.makeText(getBaseContext(), "RIDER", Toast.LENGTH_SHORT).show();
-                                loadingBar.dismiss();
+                                Toast.makeText(getBaseContext(), R.string.Customer, Toast.LENGTH_SHORT).show();
+                                mLoadingBar.dismiss();
                                 Intent registerIntent = new Intent(LoginRegisterActivity.this, CustomersMapActivity.class);
                                 startActivity(registerIntent);
                             }
-                            // Intent intent = new Intent(getApplicationContext(),DriversMapActivity.class);
-                            //startActivity(intent);
+
 
 
                         } else {
-                            Toast.makeText(LoginRegisterActivity.this, "Sorry auth failed.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginRegisterActivity.this, R.string.Sorry_auth_failed, Toast.LENGTH_SHORT).show();
 
 
                         }
 
-
-                        // ...
 
                     }
                 });
