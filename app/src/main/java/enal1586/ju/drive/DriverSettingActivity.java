@@ -142,13 +142,13 @@ public class DriverSettingActivity extends AppCompatActivity {
                     if(map.get(Service)!=null){
                         mService = map.get(Service).toString();
                         switch (mService){
-                            case"5Sits":
+                            case"5sits":
                                 mRadioGroup.check(R.id.femSits);
                                 break;
-                            case"7Sits":
+                            case"7sits":
                                 mRadioGroup.check(R.id.sjuSits);
                                 break;
-                            case"12Sits":
+                            case"12sits":
                                 mRadioGroup.check(R.id.tolvSits);
                                 break;
                         }

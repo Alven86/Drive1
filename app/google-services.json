@@ -15,34 +15,13 @@
       },
       "oauth_client": [
         {
-          "client_id": "279264011498-00r5deqnta34p64rfdjjkh1surfoe2o7.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyDXg1TfK_xueUSWLMVuYDJJzkthBcEGveM"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "279264011498-00r5deqnta34p64rfdjjkh1surfoe2o7.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:279264011498:android:01edf3f8d9b1f888fb6393",
-        "android_client_info": {
-          "package_name": "enal1586.ju.se"
-        }
-      },
-      "oauth_client": [
+          "client_id": "279264011498-c0u0vo258jkoihoqmftcvmect92ai115.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "enal1586.ju.drive",
+            "certificate_hash": "b012e8b835fe4009c30da13d9ed9c851ff3d1ec7"
+          }
+        },
         {
           "client_id": "279264011498-00r5deqnta34p64rfdjjkh1surfoe2o7.apps.googleusercontent.com",
           "client_type": 3

@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Drive</string>
-    <string name="title_activity_drivers_map">Map</string>
-    <string name="title_activity_customers_map">Map</string>
+    <string name="title_activity_drivers_map" translatable="false">Map</string>
+    <string name="title_activity_customers_map" translatable="false">Map</string>
 
 
     <!--Toast messages-->
@@ -27,7 +27,7 @@
         <string name="give_permission_message">This app needs the Location permission, please accept to use location functionality.</string>
         <string name="OK">OK</string>
        <!--The api key-->
-        <string name="api_key">AIzaSyDXg1TfK_xueUSWLMVuYDJJzkthBcEGveM</string>
+        <string name="api_key" translatable="false">AIzaSyDXg1TfK_xueUSWLMVuYDJJzkthBcEGveM</string>
 
         <!--String literal in set text can not be translate-->
 
@@ -72,17 +72,17 @@
 
         <string name="email">Email</string>
 
-        <string name="i_m_a_customer">Customer</string>
+        <string name="i_m_a_customer" translatable="false">Customer</string>
 
 
 
         <string name="registration">registration</string>
 
-        <string name="title_activity_driver_map">Map</string>
+        <string name="title_activity_driver_map" translatable="false">Map</string>
 
 
 
-        <string name="title_activity_maps">Map</string>
+        <string name="title_activity_maps" translatable="false">Map</string>
 
         <string name="name">Name</string>
 
@@ -119,6 +119,9 @@
 
         <string name="call_driver">Call Driver</string>
     <string name="city">city</string>
+    <string name="image">image</string>
+    <string name="size">size</string>
+    <string name="sits">Sits</string>
 
 
 </resources>

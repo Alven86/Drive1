@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-xmlns:tools="http://schemas.android.com/tools"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="@drawable/background"
-android:orientation="vertical"
-android:padding="20sp">
+    android:orientation="vertical"
+    android:padding="20sp">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -16,109 +15,185 @@ android:padding="20sp">
         android:layout_alignParentBottom="true"
         android:layout_marginTop="0dp"
         android:layout_marginBottom="0dp"
-        tools:ignore="MissingConstraints">
+        tools:ignore="MissingConstraints,UselessParent">
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:orientation="vertical"
-        tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="0dp">
-
-
-
-<ImageView
-    android:layout_width="100sp"
-    android:layout_height="100sp"
-    android:id="@+id/profileImage"
-    android:src="@drawable/profilee"
-    android:layout_marginBottom="20sp"/>
-<EditText
-    android:id="@+id/name"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@null"
-    android:hint="name"
-    android:layout_marginBottom="20sp"/>
-<EditText
-    android:id="@+id/phone"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@null"
-    android:hint="phone"
-    android:layout_marginBottom="20sp"
-    android:inputType="number"/>
-<EditText
-    android:id="@+id/car"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@null"
-    android:hint="car"
-    android:layout_marginBottom="20sp"/>
-    <TextView
-        android:id="@+id/size"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@null"
-        android:hint="size"
-        android:layout_marginBottom="20sp"/>
-<RadioGroup
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:id="@+id/radioGroup"
-    android:orientation="horizontal">
-    <RadioButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="sits5"
-        android:id="@+id/femSits"/>
-    <RadioButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="sits7"
-        android:id="@+id/sjuSits"/>
-    <RadioButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="sits12"
-        android:id="@+id/tolvSits"/>
-</RadioGroup>
-
-        <Button
-            android:id="@+id/confirm"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
-            android:layout_marginBottom="20dp"
-            android:background="@drawable/buttons"
-            android:drawableStart="@drawable/ic_baseline_add_task_24"
-            android:text="confirm"
-            android:textColor="@color/colorAccent" />
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/history"
-            android:drawableStart="@drawable/ic_baseline_history_24"
-            android:background="@drawable/buttons"
-            android:textColor="@color/colorAccent"
-            android:text="History"/>
-
-        <Button
-            android:id="@+id/back"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/buttons"
-            android:drawableStart="@drawable/quantum_ic_arrow_back_grey600_24"
-            android:text="back"
-            android:textColor="@color/colorAccent" />
+            android:gravity="center"
+            android:orientation="vertical"
+            tools:layout_editor_absoluteX="8dp"
+            tools:layout_editor_absoluteY="0dp">
 
 
-    </LinearLayout>
+            <ImageView
+                android:id="@+id/profileImage"
+                android:layout_width="100sp"
+                android:layout_height="100sp"
+                android:layout_marginBottom="20sp"
+                android:contentDescription="@string/image"
+                android:src="@drawable/profilee" />
+
+            <EditText
+                android:id="@+id/name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20sp"
+                android:autofillHints=""
+                android:background="@null"
+                android:hint="@string/name"
+                android:inputType="textPersonName" />
+
+            <EditText
+                android:id="@+id/phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20sp"
+                android:autofillHints=""
+                android:background="@null"
+                android:hint="@string/phone"
+                android:inputType="number"
+                tools:ignore="TextFields" />
+
+            <EditText
+                android:id="@+id/car"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20sp"
+                android:autofillHints=""
+                android:background="@null"
+                android:hint="@string/car"
+                android:inputType="text" />
+
+
+            <RadioGroup
+                android:id="@+id/radioGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/femSits"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="5"
+                    tools:ignore="HardcodedText" />
+
+                <TextView
+                    android:id="@+id/sits5t"
+                    android:layout_width="30sp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20sp"
+                    android:background="@null"
+                    android:gravity="center"
+                    android:hint="@string/sits"
+                    android:orientation="horizontal"
+                    android:textColor="#131212"
+                    android:textColorHint="#0C0B0B"
+                    android:textStyle="bold" />
+
+                <RadioButton
+                    android:id="@+id/sjuSits"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="7"
+                    tools:ignore="HardcodedText" />
+
+                <TextView
+                    android:id="@+id/sits7"
+                    android:layout_width="30sp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20sp"
+                    android:background="@null"
+                    android:gravity="center"
+                    android:hint="@string/sits"
+                    android:orientation="horizontal"
+                    android:textColor="#131212"
+                    android:textColorHint="#0C0B0B"
+                    android:textStyle="bold" />
+
+                <RadioButton
+                    android:id="@+id/tolvSits"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="12"
+                    tools:ignore="HardcodedText" />
+
+                <TextView
+                    android:id="@+id/sits12"
+                    android:layout_width="30sp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20sp"
+                    android:background="@null"
+                    android:gravity="center"
+                    android:hint="@string/sits"
+                    android:orientation="horizontal"
+                    android:textColor="#131212"
+                    android:textColorHint="#0C0B0B"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/sitstext"
+                    android:layout_width="30sp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="40sp"
+                    android:layout_marginBottom="20sp"
+                    android:background="@null"
+                    android:gravity="center"
+                    android:hint="@string/sits"
+                    android:orientation="horizontal"
+                    android:textColor="#131212"
+                    android:textColorHint="#0C0B0B"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/size"
+                    android:layout_width="20sp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20sp"
+                    android:background="@null"
+                    android:gravity="center"
+                    android:hint="--"
+                    android:orientation="horizontal"
+                    android:textColorHint="#0E0D0D"
+                    tools:ignore="HardcodedText" />
+            </RadioGroup>
+
+            <Button
+                android:id="@+id/confirm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/buttons"
+                android:drawableStart="@drawable/ic_baseline_add_task_24"
+                android:text="@string/confirm"
+                android:textColor="@color/colorAccent" />
+
+            <Button
+                android:id="@+id/history"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/buttons"
+                android:drawableStart="@drawable/ic_baseline_history_24"
+                android:text="@string/history"
+                android:textColor="@color/colorAccent" />
+
+            <Button
+                android:id="@+id/back"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/buttons"
+                android:drawableStart="@drawable/quantum_ic_arrow_back_grey600_24"
+                android:text="@string/back"
+                android:textColor="@color/colorAccent" />
+
+
+        </LinearLayout>
     </ScrollView>
-    </RelativeLayout>
+</RelativeLayout>
 
 
 

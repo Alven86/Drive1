@@ -30,7 +30,8 @@
                 android:drawableStart="@drawable/ic_baseline_exit_to_app_24"
                 android:background="@drawable/buttons"
                 android:textColor="@color/colorAccent"
-                android:text="logout" />
+                android:text="@string/logout"
+                tools:ignore="ButtonStyle" />
 
 
             <Button
@@ -41,7 +42,8 @@
                 android:drawableStart="@drawable/ic_baseline_settings_24"
                 android:background="@drawable/buttons"
                 android:textColor="@color/colorAccent"
-                android:text="settings" />
+                android:text="@string/settings"
+                tools:ignore="ButtonStyle" />
         </LinearLayout>
 
         <androidx.cardview.widget.CardView
@@ -80,13 +82,15 @@
                 android:layout_width="100sp"
                 android:layout_height="100sp"
                 android:padding="20sp"
-                android:src="@drawable/profilee" />
+                android:src="@drawable/profilee"
+                android:contentDescription="@string/image" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingLeft="40sp">
+                android:paddingStart="40sp"
+                tools:ignore="RtlSymmetry">
 
                 <TextView
                     android:id="@+id/driverName"
@@ -122,7 +126,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@android:color/white"
+            android:background="@drawable/background"
             android:orientation="vertical">
 
             <RadioGroup
@@ -135,19 +139,63 @@
                     android:id="@+id/femSits"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="sits5" />
+                    android:text="5"
+                    tools:ignore="HardcodedText" />
+
+                <TextView
+                    android:id="@+id/sits5t"
+                    android:layout_width="30sp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20sp"
+                    android:background="@null"
+                    android:gravity="center"
+                    android:hint="@string/sits"
+                    android:orientation="horizontal"
+                    android:textColor="#131212"
+                    android:textColorHint="#0C0B0B"
+                    android:textStyle="bold" />
 
                 <RadioButton
                     android:id="@+id/sjuSits"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="sits7" />
+                    android:text="7"
+                    tools:ignore="HardcodedText" />
+
+                <TextView
+                    android:id="@+id/sits7"
+                    android:layout_width="30sp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20sp"
+                    android:background="@null"
+                    android:gravity="center"
+                    android:hint="@string/sits"
+                    android:orientation="horizontal"
+                    android:textColor="#131212"
+                    android:textColorHint="#0C0B0B"
+                    android:textStyle="bold" />
 
                 <RadioButton
                     android:id="@+id/tolvSits"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="sits12" />
+                    android:text="12"
+                    tools:ignore="HardcodedText" />
+
+                <TextView
+                    android:id="@+id/sits12"
+                    android:layout_width="30sp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20sp"
+                    android:background="@null"
+                    android:gravity="center"
+                    android:hint="@string/sits"
+                    android:orientation="horizontal"
+                    android:textColor="#131212"
+                    android:textColorHint="#0C0B0B"
+                    android:textStyle="bold" />
+
+
             </RadioGroup>
 
             <Button
@@ -157,7 +205,7 @@
                 android:layout_gravity="bottom"
                 android:background="@drawable/buttons"
                 android:textColor="@color/colorAccent"
-                android:text="calldriver" />
+                android:text="@string/call_driver" />
         </LinearLayout>
     </LinearLayout>
 
