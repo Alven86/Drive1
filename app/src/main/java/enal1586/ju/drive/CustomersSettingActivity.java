@@ -54,7 +54,6 @@ public class CustomersSettingActivity extends AppCompatActivity {
     private final static String Profile_Image= "profileImageUrl";
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -8,7 +8,7 @@
 
         <string name="Please_write_your_Email">Please write your Email</string>
         <string name="Please_write_your_Password">Please write your Password</string>
-        <string name="Driver_Login_Successfully">Driver Login Successfully</string>
+        <string name="Login_Successfully">Login Successfully</string>
         <string name="Login_Error_Try_Again">Please Try Again. Error Occurred, while Login..</string>
         <string name="Driver">Driver</string>
         <string name="Customer">Customer</string>
@@ -27,7 +27,7 @@
         <string name="give_permission_message">This app needs the Location permission, please accept to use location functionality.</string>
         <string name="OK">OK</string>
        <!--The api key-->
-        <string name="api_key" translatable="false">AIzaSyDXg1TfK_xueUSWLMVuYDJJzkthBcEGveM</string>
+        <string name="api_key" translatable="false">AIzaSyDYuz1hAC-gdXw9pNYdq2DFh18nMXbLE-s</string>
 
         <!--String literal in set text can not be translate-->
 
@@ -47,6 +47,9 @@
     <string name="Looking_for_driver_location">Looking for Driver Location....</string>
     <string name="Driver_is_here">Driver\'s Here</string>
     <string name="Driver_found">\"Driver Found: \"</string>
+    <string name="Pickup_Here">Pickup Here</string>
+    <string name="your_driver">your driver</string>
+
 
     <!--Layouts-->
     <string name="google">Google</string>

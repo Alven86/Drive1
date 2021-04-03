@@ -1,4 +1,4 @@
-package enal1586.ju.drive;
+package enal1586.ju.drive.HistoryHelpers;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,6 +7,8 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import enal1586.ju.drive.HistorySingleActivity;
+import enal1586.ju.drive.R;
 
 
 public class HistoryView extends RecyclerView.ViewHolder implements View.OnClickListener{

@@ -1,4 +1,4 @@
-package enal1586.ju.drive;
+package enal1586.ju.drive.HistoryHelpers;
 
 public class HistoryInfo {
     private String mRideId;

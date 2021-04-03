@@ -58,8 +58,6 @@ public class HistorySingleActivity extends AppCompatActivity implements OnMapRea
     private final static String RiderId = "rideId";
     private final static String Phone = "phone";
     private final static String Profile_Image= "profileImageUrl";
-    private final static String Rider = "rider";
-    private final static String Driver= "driver";
     private final static String Time_Stamp = "timestamp";
     private final static String Rating= "rating";
     private final static String Distance = "distance";
@@ -77,7 +75,9 @@ public class HistorySingleActivity extends AppCompatActivity implements OnMapRea
 
 
 
+        polylines = new ArrayList<>();
         mRideId = getIntent().getExtras().getString(RiderId);
+
 
         mMapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mMapFragment.getMapAsync(this);
@@ -110,17 +110,17 @@ public class HistorySingleActivity extends AppCompatActivity implements OnMapRea
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){
                     for (DataSnapshot child:dataSnapshot.getChildren()){
-                        if (child.getKey().equals(Rider)){
+                        if (child.getKey().equals("customer")){
                             mCustomerId = child.getValue().toString();
                             if(!mCustomerId.equals(mCurrentUserId)){
                                 mUserDriverOrCustomer = "Drivers";
                                 getUserInformation("Customers", mCustomerId);
                             }
                         }
-                        if (child.getKey().equals(Driver)){
+                        if (child.getKey().equals("driver")){
                             mDriverId = child.getValue().toString();
                             if(!mDriverId.equals(mCurrentUserId)){
-                                mUserDriverOrCustomer = "Rider";
+                                mUserDriverOrCustomer = "Customers";
                                 getUserInformation("Drivers", mDriverId);
                                 displayCustomerRelatedObjects();
                             }
@@ -207,7 +207,7 @@ public class HistorySingleActivity extends AppCompatActivity implements OnMapRea
     }
     private void getRouteToMarker() {
         Routing routing = new Routing.Builder()
-                .key("R.string.api_key")
+                .key("AIzaSyDYuz1hAC-gdXw9pNYdq2DFh18nMXbLE-s")
                 .travelMode(AbstractRouting.TravelMode.DRIVING)
                 .withListener(this)
                 .alternativeRoutes(false)
@@ -273,7 +273,7 @@ public class HistorySingleActivity extends AppCompatActivity implements OnMapRea
             Polyline polyline = mMap.addPolyline(polyOptions);
             polylines.add(polyline);
 
-            Toast.makeText(getApplicationContext(),R.string.Route+ (i+1) +R.string.DIstance+ route.get(i).getDistanceValue()+R.string.Duration+ route.get(i).getDurationValue(),Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(),"Route "+ (i+1) +": distance - "+ route.get(i).getDistanceValue()+": duration - "+ route.get(i).getDurationValue(),Toast.LENGTH_SHORT).show();
         }
 
     }

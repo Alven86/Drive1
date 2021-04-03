@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
+import enal1586.ju.drive.HistoryHelpers.HistoryAdapter;
+import enal1586.ju.drive.HistoryHelpers.HistoryInfo;
 
 
 public class HistoryActivity extends AppCompatActivity {
@@ -81,8 +83,8 @@ private final static String CustomerOrDriver = "customerOrDriver";
                     Long timestamp = 0L;
                     String distance = "";
 
-                    if(dataSnapshot.child(getString(R.string.time_stamp)).getValue() != null){
-                        timestamp = Long.valueOf(dataSnapshot.child(getString(R.string.time_stamp)).getValue().toString());
+                    if(dataSnapshot.child("timestamp").getValue() != null){
+                        timestamp = Long.valueOf(dataSnapshot.child("timestamp").getValue().toString());
                     }
 
 

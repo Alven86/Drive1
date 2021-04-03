@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
@@ -61,6 +62,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class DriversMapActivity extends FragmentActivity implements OnMapReadyCallback, RoutingListener {
@@ -70,33 +72,21 @@ public class DriversMapActivity extends FragmentActivity implements OnMapReadyCa
     LocationRequest mLocationRequest;
 
     private FusedLocationProviderClient mFusedLocationClient;
-
-
     private Button mLogout, mSettings, mRideStatus;
-
     private Switch mWorkingSwitch;
     private GoogleSignInClient mGoogleSignInClient;
 
   //  private int mStatus = 0;
     private String mStatus = "";
-
-
     private String mCustomerId = "", mDestination;
     private LatLng mDestinationLatLng, mPickupLatLng;
     private float mRideDistance;
-
     private Boolean mIsLoggingOut = false;
-
     private SupportMapFragment mMapFragment;
-
     private LinearLayout mCustomerInfo;
-
     private ImageView mCustomerProfileImage;
-
     private TextView mCustomerName, mCustomerPhone, mCustomerDestination;
     private FirebaseAuth mAuth;
-
-
     private GoogleApiClient mGoogleApiClient;
     private GoogleSignInOptions mGSO;
 
@@ -125,10 +115,6 @@ public class DriversMapActivity extends FragmentActivity implements OnMapReadyCa
         setContentView(R.layout.activity_drivers_map);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         polylines = new ArrayList<>();
-
-
-
-
 
         //DB connect.
 
@@ -190,9 +176,6 @@ public class DriversMapActivity extends FragmentActivity implements OnMapReadyCa
         });
 
 
-
-
-
         mGSO =  new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
@@ -206,9 +189,6 @@ public class DriversMapActivity extends FragmentActivity implements OnMapReadyCa
                 .build();
 
         mGoogleApiClient.connect();
-
-
-
 
 
         //log out from driver
@@ -230,38 +210,14 @@ public class DriversMapActivity extends FragmentActivity implements OnMapReadyCa
                                 Intent intent = new Intent(DriversMapActivity.this, MainActivity.class);
                                 startActivity(intent);
                             }else{
-                                Toast.makeText(getApplicationContext(),R.string.Session_not_close, Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(), R.string.Session_not_close, Toast.LENGTH_LONG).show();
                             }
                         }
                     });
 
-
-
-
-
-
-
-
-
-
-          //  FirebaseAuth.getInstance().signOut();
-            //  Intent intent = new Intent(DriversMapActivity.this, MainActivity.class);
-            // startActivity(intent);
             finish();
             return;
         });
-
-
-
-
-
-
-
-
-
-
-
-
 
         //settings driver
         mSettings.setOnClickListener(v -> {
@@ -318,7 +274,7 @@ public class DriversMapActivity extends FragmentActivity implements OnMapReadyCa
                         locationLng = Double.parseDouble(map.get(1).toString());
                     }
                     mPickupLatLng = new LatLng(locationLat,locationLng);
-                    pickupMarker = mMap.addMarker(new MarkerOptions().position(mPickupLatLng).title("pickup location").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_pickup)));
+                    pickupMarker = mMap.addMarker(new MarkerOptions().position(mPickupLatLng).title(getResources().getString(R.string.pickup_location)).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_pickup)));
                     getRouteToMarker(mPickupLatLng);
                 }
             }
@@ -333,7 +289,7 @@ public class DriversMapActivity extends FragmentActivity implements OnMapReadyCa
     private void getRouteToMarker(LatLng pickupLatLng) {
         if (pickupLatLng != null && mLastLocation != null){
             Routing routing = new Routing.Builder()
-                    .key("R.string.apiKey")
+                    .key("AIzaSyDYuz1hAC-gdXw9pNYdq2DFh18nMXbLE-s")
                     .travelMode(AbstractRouting.TravelMode.DRIVING)
                     .withListener(this)
                     .alternativeRoutes(false)
@@ -586,7 +542,7 @@ public class DriversMapActivity extends FragmentActivity implements OnMapReadyCa
 
 
     private List<Polyline> polylines;
-    private static final int[] COLORS = new int[]{R.color.primary_dark_material_light};
+    private static final int[] COLORS = new int[]{R.color.Arsenic};
     @Override
     public void onRoutingFailure(RouteException e) {
         if(e != null) {
@@ -620,7 +576,7 @@ public class DriversMapActivity extends FragmentActivity implements OnMapReadyCa
             Polyline polyline = mMap.addPolyline(polyOptions);
             polylines.add(polyline);
 
-            Toast.makeText(getApplicationContext(),R.string.Route+ (i+1) +R.string.DIstance+ route.get(i).getDistanceValue()+R.string.Duration+ route.get(i).getDurationValue(),Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(),"Route "+ (i+1) +": distance - "+ route.get(i).getDistanceValue()+": duration - "+ route.get(i).getDurationValue(),Toast.LENGTH_SHORT).show();
         }
 
     }

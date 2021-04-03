@@ -3,4 +3,8 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#d7d2cc</color>
     <color name="colorAccent">#dfc23c</color>
+    <color name="Arsenic">#304352</color>
+    <color name="Gallery">#d7d2cc</color>
+    <color name="ColumbiaBlue">#ABDCFF</color>
+    <color name="SealBrown">#131313</color>
 </resources>

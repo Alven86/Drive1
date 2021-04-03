@@ -1,4 +1,4 @@
-package enal1586.ju.drive;
+package enal1586.ju.drive.HistoryHelpers;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
+
+import enal1586.ju.drive.R;
 
 public class HistoryAdapter extends RecyclerView.Adapter<HistoryView> {
 

@@ -3,7 +3,7 @@
     <string name="app_name">Drive</string>
     <string name="Please_write_your_Email">Skriv din E-post</string>
     <string name="Please_write_your_Password">Skriv din Lösenord</string>
-    <string name="Driver_Login_Successfully">Förare lyckats loggar in</string>
+    <string name="Login_Successfully">Lyckats loggar in</string>
     <string name="Login_Error_Try_Again">Var vänligt och försök igen. Ett fel inträffades medan du loggar in..</string>
     <string name="Driver">Förare</string>
     <string name="Customer">Kund</string>
@@ -71,4 +71,6 @@
     <string name="image">bild</string>
     <string name="size">storlek</string>
     <string name="sits">Säte</string>
+    <string name="Pickup_Here">Plocka upp här</string>
+    <string name="your_driver">din förare</string>
 </resources>

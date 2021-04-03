@@ -143,7 +143,7 @@ public class LoginRegisterActivity extends AppCompatActivity {
 
             mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, task -> {
                 if (task.isSuccessful()) {
-                    Toast.makeText(LoginRegisterActivity.this, R.string.Driver_Login_Successfully, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginRegisterActivity.this, R.string.Login_Successfully, Toast.LENGTH_SHORT).show();
                     FirebaseUser user = mAuth.getCurrentUser();
                     mLoadingBar.dismiss();
 

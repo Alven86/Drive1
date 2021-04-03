@@ -41,18 +41,12 @@ public class DriverSettingActivity extends AppCompatActivity {
     private EditText mPhoneField;
     private EditText mCarField;
     private TextView mServiceField;
-
     private Button mBack, mConfirm, mHistory;
-
     private ImageView mProfileImage;
-
     private FirebaseAuth mAuth;
     private DatabaseReference mDriverDatabase;
-
     private String mUserID,mName,mPhone,mCar,mService,mProfileImageUrl;
-
     private Uri mResultUri;
-
     private RadioGroup mRadioGroup;
 
     private final static String Name = "name";
@@ -96,15 +90,12 @@ public class DriverSettingActivity extends AppCompatActivity {
                 saveUserInformation();
 
                 finish();
-
-
         });
 
         mBack.setOnClickListener(v -> {
             finish();
             return;
         });
-
 
         //history driver
         mHistory.setOnClickListener(v -> {
@@ -134,8 +125,7 @@ public class DriverSettingActivity extends AppCompatActivity {
                         mCarField.setText(mCar);
                     }
 
-
-                        if(map.get(Service)!=null){
+                    if(map.get(Service)!=null){
                             mService = map.get(Service).toString();
                             mServiceField.setText(mService);
                     }
@@ -181,8 +171,6 @@ public class DriverSettingActivity extends AppCompatActivity {
         final RadioButton radioButton = (RadioButton)DriverSettingActivity.this.findViewById(selectId);
 
         if (radioButton.getText() == null){
-
-
         }
 
         mService = radioButton.getText().toString();
@@ -216,22 +204,6 @@ public class DriverSettingActivity extends AppCompatActivity {
                     return;
                 }
             });
-          /*  uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                   // Uri downloadUrl = taskSnapshot.getDownloadUr1();
-                    Task<Uri> downloadUrl = taskSnapshot.getStorage().getDownloadUrl();
-
-                    Map newImage = new HashMap();
-                    newImage.put("profileImageUrl", downloadUrl.toString());
-                    mDriverDatabase.updateChildren(newImage);
-
-                    finish();
-                    return;
-                }
-            });
-
-           */
 
             uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
@@ -268,9 +240,4 @@ public class DriverSettingActivity extends AppCompatActivity {
         }
     }
 
-
-
-
-
 }
-
